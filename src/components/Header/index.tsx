@@ -13,9 +13,9 @@ interface HeaderProps {
 }
 
 export const Header = ({ toggleNavigation }: HeaderProps) => {
-  const [anchorEl, setAnchorEl] = (useState < null) | (HTMLElement > null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    (useState < null) | (HTMLElement > null);
+    useState<null | HTMLElement>(null);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

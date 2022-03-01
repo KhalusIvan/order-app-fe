@@ -5,7 +5,7 @@ import { Navigation } from "../Navigation";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
 
-const FOOTER_HEIGHT = 0;
+import { FOOTER_HEIGHT } from "../../utils/constants";
 
 export const Layout: FC = ({ children }) => {
   const [open, setOpen] = useState(false);
