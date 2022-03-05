@@ -8,7 +8,6 @@ import {
   ListItemIcon,
   ListItemText,
   styled,
-  Tooltip,
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
@@ -32,7 +31,7 @@ export const RouteItem = ({
   const handleNavigate = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
-    if (!route.isEnabled || hasChildren) e.preventDefault();
+    if (hasChildren) e.preventDefault();
   };
 
   const isSelected =
@@ -40,8 +39,7 @@ export const RouteItem = ({
     (hasChildren && route.subRoutes?.some((e) => location.pathname === e.path));
 
   const item = (
-    <StyledListItemButton
-      isEnabled={route.isEnabled}
+    <ListItemButton
       sx={{ pl: nested ? 3 : 1 }}
       onClick={() => handleMenuClick(route)}
     >
@@ -60,27 +58,16 @@ export const RouteItem = ({
       </ListItemIcon>
       <ListItemText primary={route.title} />
       {hasChildren && (route.expanded ? <ExpandLess /> : <ExpandMore />)}
-    </StyledListItemButton>
+    </ListItemButton>
   );
 
   return (
     <StyledNavLink
       to={`${route.path}`}
-      key={route.key}
+      key={route.path}
       onClick={handleNavigate}
     >
-      {route.description ? (
-        <Tooltip
-          title={`${route.description}${
-            !route.isEnabled ? " (Not Allowed)" : ""
-          }`}
-          placement="right"
-        >
-          {item}
-        </Tooltip>
-      ) : (
-        item
-      )}
+      {item}
     </StyledNavLink>
   );
 };
@@ -89,13 +76,6 @@ const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: inherit;
 `;
-
-const StyledListItemButton = styled(ListItemButton)<{ isEnabled: boolean }>(
-  ({ theme, isEnabled }) =>
-    !isEnabled
-      ? { "*": { cursor: "not-allowed", color: theme.palette.text.secondary } }
-      : {}
-);
 
 const StyledIconButton = styled(IconButton)<{ isSelected: boolean }>(
   ({ isSelected, theme }) => ({

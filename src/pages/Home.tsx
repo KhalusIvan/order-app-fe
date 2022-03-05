@@ -1,16 +1,20 @@
-import { styled, Typography } from "@mui/material";
+/*import { styled, Typography } from "@mui/material";
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
 
 import logo from "../logo.svg";
 
 import { AppContext } from "../contexts";
-import { APP_TITLE, PAGE_TITLE_HOME } from "../utils/constants";
+import { APP_TITLE, PAGE_TITLE_HOME } from "../utils/constants";*/
+
+import { Redirect } from "react-router-dom";
 
 export const Home = () => {
-  const context = useContext(AppContext);
+  //const context = useContext(AppContext);
 
-  return (
+  return <Redirect to="/auth/sign-in" />;
+
+  /*return (
     <>
       <Helmet>
         <title>
@@ -22,9 +26,9 @@ export const Home = () => {
         <StyledLogo src={logo} alt="logo" />
       </LogoWrapper>
     </>
-  );
+  );*/
 };
-
+/*
 const LogoWrapper = styled("div")`
   text-align: center;
   margin-top: 6rem;
@@ -44,4 +48,4 @@ const StyledLogo = styled("img")`
       transform: rotate(360deg);
     }
   }
-`;
+`;*/

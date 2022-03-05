@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Helmet } from "react-helmet";
+import { HelmetProvider, Helmet } from "react-helmet-async";
 
 import App from "./App";
 
@@ -8,23 +8,25 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
 import { APP_TITLE, APP_DESCRIPTION } from "./utils/constants";
-//import { store } from "./redux/store";
-//import { Provider } from "react-redux";
-/*<Provider store={store}>
-</Provider>*/
+import { store } from "./redux/store";
+import { Provider } from "react-redux";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Helmet>
-      <title>{APP_TITLE}</title>
-      <meta name="description" content={APP_DESCRIPTION} />
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-      />
-      <meta name="viewport" content="initial-scale=1, width=device-width" />
-    </Helmet>
-    <App />
+    <HelmetProvider>
+      <Helmet titleTemplate="%s | LedgerCoin" defaultTitle="LedgerCoin" />
+      <Helmet>
+        <meta name="description" content={APP_DESCRIPTION} />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Helmet>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </HelmetProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
