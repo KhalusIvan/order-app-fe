@@ -12,6 +12,8 @@ import {
 } from "@mui/icons-material";
 
 import { SignIn } from "../pages/auth/SignIn";
+import { SignUp } from "../pages/auth/SignUp";
+import { ResetPassword } from "../pages/auth/ResetPassword";
 import { Home } from "../pages/Home";
 
 import { Route } from "../types/Route";
@@ -24,6 +26,21 @@ const routes: Array<Route> = [
     sidebar: false,
     authentificated: false,
   },
+  {
+    title: "Sign up",
+    component: SignUp,
+    path: "/auth/sign-up",
+    sidebar: false,
+    authentificated: false,
+  },
+  {
+    title: "Reset password",
+    component: ResetPassword,
+    path: "/auth/reset-password",
+    sidebar: false,
+    authentificated: false,
+  },
+  //
   {
     title: "welcome",
     component: Home,

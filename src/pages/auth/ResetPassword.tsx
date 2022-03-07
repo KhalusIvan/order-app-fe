@@ -1,43 +1,38 @@
-import {
-  Paper,
-  Typography,
-  Grid,
-  FormControlLabel,
-  Checkbox,
-  Button,
-  styled,
-} from "@mui/material";
+import { Paper, Typography, Grid, Button, styled } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { NavLink } from "react-router-dom";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-import { CustomTextField } from "../../components/Inputs/CustomTextField";
-import { CustomPasswordField } from "../../components/Inputs/CustomPasswordField";
+import Lock from "../../static/icons/lock.png";
 
-export const SignIn = () => {
+import { CustomTextField } from "../../components/Inputs/CustomTextField";
+
+export const ResetPassword = () => {
   return (
     <>
-      <Helmet title="Sign in" />
+      <Helmet title="Sign up" />
       <Grid container justifyContent="center">
         <Grid item xs={11} md={7} lg={5} xl={4}>
           <Paper
             elevation={4}
             sx={{ pt: 7, pb: 1, px: 4, minWidth: 1, borderRadius: 5 }}
           >
-            <Typography align="center" variant="h3">
-              Авторизація
+            <Grid container justifyContent="center" sx={{ pb: 2 }}>
+              <Grid item xs={3}>
+                <img src={Lock} alt="lock" style={{ width: "100%" }} />
+              </Grid>
+            </Grid>
+            <Typography align="center" variant="h4">
+              Відновлення паролю
             </Typography>
             <Formik
               initialValues={{
                 email: "",
-                password: "",
-                rememberMe: false,
               }}
               validationSchema={Yup.object().shape({
                 email: Yup.string().email().required("Обов'язкове поле!"),
-                password: Yup.string().required("Обов'язкове поле!"),
               })}
               onSubmit={(values, { setSubmitting }) => {}}
             >
@@ -62,49 +57,18 @@ export const SignIn = () => {
                     error={Boolean(touched.email && errors.email)}
                     helperText={(touched.email && errors.email) || ""}
                   />
-                  <CustomPasswordField
-                    label="Пароль"
-                    placeholder="Введіть пароль"
-                    value={values.password}
-                    name="password"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    error={Boolean(touched.password && errors.password)}
-                    helperText={(touched.password && errors.password) || ""}
-                  />
-                  <Grid
-                    container
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={values.rememberMe}
-                          onChange={(e) =>
-                            setFieldValue("rememberMe", e.target.checked)
-                          }
-                        />
-                      }
-                      label="Запам'ятати мене"
-                    />
-                    <NavLink to={`/auth/reset-password`}>
-                      Забули пароль?
-                    </NavLink>
-                  </Grid>
                   <StyledButton
                     type="submit"
                     sx={{ my: 2, py: 1 }}
                     variant="contained"
                   >
-                    Ввійти
+                    Відновити пароль
                   </StyledButton>
                 </form>
               )}
             </Formik>
             <Typography align="center" variant="body2" sx={{ mt: 4 }}>
-              Не маєте акаунту?{" "}
-              <NavLink to={`/auth/sign-up`}>Зареєструватися</NavLink>
+              Повернутися до <NavLink to={`/auth/sign-in`}>Авторизація</NavLink>
             </Typography>
           </Paper>
         </Grid>

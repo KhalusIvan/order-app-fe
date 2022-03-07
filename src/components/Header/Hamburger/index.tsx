@@ -6,7 +6,7 @@ interface HamburgerProps {
 }
 
 export const Hamburger = ({ toggleNavigation }: HamburgerProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggle = () => {
     setIsOpen(!isOpen);

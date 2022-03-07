@@ -8,7 +8,7 @@ import { Footer } from "../Footer";
 import { FOOTER_HEIGHT } from "../../utils/constants";
 
 export const Layout: FC = ({ children }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const toggleNavigation = () => setOpen((status) => !status);
 
   return (

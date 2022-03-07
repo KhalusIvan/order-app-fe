@@ -1,7 +1,16 @@
-import { Typography, Box, TextField } from "@mui/material";
+import { useState } from "react";
+import {
+  Typography,
+  Box,
+  TextField,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import { styled } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-export const CustomTextField = ({
+export const CustomPasswordField = ({
   label,
   placeholder,
   value,
@@ -20,6 +29,8 @@ export const CustomTextField = ({
   error: boolean;
   helperText: string;
 }) => {
+  const [viewPassword, setViewPassword] = useState<boolean>(false);
+
   return (
     <>
       <Box sx={{ py: 1 }}>
@@ -32,7 +43,22 @@ export const CustomTextField = ({
           onBlur={onBlur}
           onChange={onChange}
           error={error}
+          type={viewPassword ? "text" : "password"}
           helperText={error && helperText}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => {
+                    setViewPassword((prev) => !prev);
+                  }}
+                >
+                  {viewPassword && <Visibility />}
+                  {!viewPassword && <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
           sx={{ width: 1 }}
         />
       </Box>

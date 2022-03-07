@@ -3,6 +3,7 @@ import { CssBaseline, ThemeProvider, styled } from "@mui/material";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Layout } from "./components/Layout";
+import { Guard } from "./components/Guard";
 import { PageDefault } from "./components/PageDefault";
 
 import { AppContext, ThemeModeContext } from "./contexts";
@@ -42,9 +43,11 @@ function App() {
           path={route.path}
           exact
           render={(props) => (
-            <Layout>
-              <ElementComponent />
-            </Layout>
+            <Guard>
+              <Layout>
+                <ElementComponent />
+              </Layout>
+            </Guard>
           )}
         />
       );
