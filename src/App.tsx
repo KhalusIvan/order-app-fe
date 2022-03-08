@@ -1,10 +1,8 @@
-import { useMemo, useState } from "react";
-import { CssBaseline, ThemeProvider, styled } from "@mui/material";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useMemo, useState, useEffect } from "react";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 
-import { Layout } from "./components/Layout";
-import { Guard } from "./components/Guard";
-import { PageDefault } from "./components/PageDefault";
+import { AddRoute } from "./config/AddRoute";
 
 import { AppContext, ThemeModeContext } from "./contexts";
 import { AppClient } from "./clients";
@@ -13,12 +11,16 @@ import { Route as AppRoute } from "./types";
 import { getAppTheme } from "./styles/theme";
 import { DARK_MODE_THEME, LIGHT_MODE_THEME } from "./utils/constants";
 
-import { grey } from "@mui/material/colors";
+import { checkUser } from "./redux/operation/userAuthOperation";
+import { useDispatch } from "react-redux";
 
 function App() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [mode, setMode] = useState<
     typeof LIGHT_MODE_THEME | typeof DARK_MODE_THEME
   >(LIGHT_MODE_THEME);
+
   const appClient = new AppClient();
 
   const themeMode = useMemo(
@@ -34,37 +36,9 @@ function App() {
 
   const theme = useMemo(() => getAppTheme(mode), [mode]);
 
-  const addRoute = (route: AppRoute) => {
-    const ElementComponent = route.component || PageDefault;
-    if (route.authentificated) {
-      return (
-        <Route
-          key={route.path}
-          path={route.path}
-          exact
-          render={(props) => (
-            <Guard>
-              <Layout>
-                <ElementComponent />
-              </Layout>
-            </Guard>
-          )}
-        />
-      );
-    }
-    return (
-      <Route
-        key={route.path}
-        path={route.path}
-        exact
-        render={(props) => (
-          <LayoutWrapper>
-            <ElementComponent />
-          </LayoutWrapper>
-        )}
-      />
-    );
-  };
+  useEffect(() => {
+    dispatch(checkUser(history));
+  }, []);
 
   return (
     <AppContext.Provider value={appClient}>
@@ -75,8 +49,8 @@ function App() {
             <Switch>
               {routes.map((route: AppRoute) =>
                 route.subRoutes
-                  ? route.subRoutes.map((item: AppRoute) => addRoute(item))
-                  : addRoute(route)
+                  ? route.subRoutes.map((item: AppRoute) => AddRoute(item))
+                  : AddRoute(route)
               )}
             </Switch>
           </Router>
@@ -85,13 +59,5 @@ function App() {
     </AppContext.Provider>
   );
 }
-
-const LayoutWrapper = styled("div")`
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${grey[100]};
-`;
 
 export default App;

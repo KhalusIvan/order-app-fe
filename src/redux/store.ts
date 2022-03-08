@@ -1,12 +1,12 @@
 import { createStore, combineReducers, applyMiddleware, Store } from "redux";
 import thunk from "redux-thunk";
 
-import reducer from "./duck/firstDuck";
+import alertReducer from "./duck/alertDuck";
 
-const rootReducer = combineReducers({ reducer });
+const rootReducer = combineReducers({ alertReducer });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-export const store: Store<RootState, ArticleAction> & {
+export const store: Store<RootState, AlertAction> & {
   dispatch: DispatchType;
 } = createStore(rootReducer, applyMiddleware(thunk));
