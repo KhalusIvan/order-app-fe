@@ -1,5 +1,7 @@
+import { AlertColor } from "@mui/material";
+
 export type Alert = {
-  id: string;
-  severity: string;
+  id: number;
+  severity: AlertColor;
   text: string;
 };

@@ -6,6 +6,7 @@ import {
   Checkbox,
   Button,
   styled,
+  CircularProgress,
 } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { NavLink } from "react-router-dom";
@@ -16,7 +17,11 @@ import * as Yup from "yup";
 import { CustomTextField } from "../../components/Inputs/CustomTextField";
 import { CustomPasswordField } from "../../components/Inputs/CustomPasswordField";
 
+import { signIn } from "../../redux/operation/userAuthOperation";
+import { useDispatch } from "react-redux";
+
 export const SignIn = () => {
+  const dispatch = useDispatch();
   return (
     <>
       <Helmet title="Sign in" />
@@ -36,10 +41,14 @@ export const SignIn = () => {
                 rememberMe: false,
               }}
               validationSchema={Yup.object().shape({
-                email: Yup.string().email().required("Обов'язкове поле!"),
+                email: Yup.string()
+                  .email("Невалідний емейл!")
+                  .required("Обов'язкове поле!"),
                 password: Yup.string().required("Обов'язкове поле!"),
               })}
-              onSubmit={(values, { setSubmitting }) => {}}
+              onSubmit={(values, { setSubmitting }) => {
+                dispatch(signIn(values, setSubmitting));
+              }}
             >
               {({
                 errors,
@@ -96,8 +105,13 @@ export const SignIn = () => {
                     type="submit"
                     sx={{ my: 2, py: 1 }}
                     variant="contained"
+                    disabled={isSubmitting}
                   >
-                    Ввійти
+                    {isSubmitting ? (
+                      <CircularProgress size={25} />
+                    ) : (
+                      <>Ввійти</>
+                    )}
                   </StyledButton>
                 </form>
               )}

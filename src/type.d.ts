@@ -12,7 +12,7 @@ type ArticleAction = {
   type: string;
   article: IArticle;
 };
-
+//from here
 type DispatchType = (args: ArticleAction) => ArticleAction;
 
 type AlertAction = {

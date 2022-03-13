@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useState, useEffect } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { BrowserRouter as Router, Switch, useHistory } from "react-router-dom";
 
+import { Alerts } from "./components/Alerts";
 import { AddRoute } from "./config/AddRoute";
 
-import { AppContext, ThemeModeContext } from "./contexts";
-import { AppClient } from "./clients";
+import { ThemeModeContext } from "./contexts";
 import { routes } from "./config";
 import { Route as AppRoute } from "./types";
 import { getAppTheme } from "./styles/theme";
@@ -20,8 +21,6 @@ function App() {
   const [mode, setMode] = useState<
     typeof LIGHT_MODE_THEME | typeof DARK_MODE_THEME
   >(LIGHT_MODE_THEME);
-
-  const appClient = new AppClient();
 
   const themeMode = useMemo(
     () => ({
@@ -41,22 +40,21 @@ function App() {
   }, []);
 
   return (
-    <AppContext.Provider value={appClient}>
-      <ThemeModeContext.Provider value={themeMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Router>
-            <Switch>
-              {routes.map((route: AppRoute) =>
-                route.subRoutes
-                  ? route.subRoutes.map((item: AppRoute) => AddRoute(item))
-                  : AddRoute(route)
-              )}
-            </Switch>
-          </Router>
-        </ThemeProvider>
-      </ThemeModeContext.Provider>
-    </AppContext.Provider>
+    <ThemeModeContext.Provider value={themeMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Alerts />
+        <Router>
+          <Switch>
+            {routes.map((route: AppRoute) =>
+              route.subRoutes
+                ? route.subRoutes.map((item: AppRoute) => AddRoute(item))
+                : AddRoute(route)
+            )}
+          </Switch>
+        </Router>
+      </ThemeProvider>
+    </ThemeModeContext.Provider>
   );
 }
 

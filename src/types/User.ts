@@ -1,12 +1,9 @@
+import { Workspace } from "./Workspace";
+
 export type User = {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  password?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date;
-  isActive: boolean;
-  isAdmin: boolean;
-  isVerified: boolean;
+  currentWorkspace: Workspace | null;
 };
