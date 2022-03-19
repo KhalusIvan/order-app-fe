@@ -8,7 +8,7 @@ enum actions {
 const initialState: Alert[] = [];
 
 export function addAlertAction(alert: Alert) {
-  const action: AlertAction = {
+  const action: CustomAction = {
     type: actions.ALERT_ADD,
     payload: alert,
   };
@@ -16,7 +16,7 @@ export function addAlertAction(alert: Alert) {
 }
 
 export function removeAlertAction(alert: Alert) {
-  const action: AlertAction = {
+  const action: CustomAction = {
     type: actions.ALERT_REMOVE,
     payload: alert,
   };
@@ -25,7 +25,7 @@ export function removeAlertAction(alert: Alert) {
 
 const alertReducer = (
   state: Alert[] = initialState,
-  action: AlertAction
+  action: CustomAction
 ): Alert[] => {
   switch (action.type) {
     case actions.ALERT_ADD:

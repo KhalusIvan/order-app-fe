@@ -1,6 +1,13 @@
-import { Paper, Typography, Grid, Button, styled } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Grid,
+  Button,
+  styled,
+  CircularProgress,
+} from "@mui/material";
 import { Helmet } from "react-helmet-async";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -8,7 +15,13 @@ import * as Yup from "yup";
 import { CustomTextField } from "../../components/Inputs/CustomTextField";
 import { CustomPasswordField } from "../../components/Inputs/CustomPasswordField";
 
+import { register } from "../../redux/operation/userOperation";
+import { useDispatch } from "react-redux";
+
 export const SignUp = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   return (
     <>
       <Helmet title="Sign up" />
@@ -27,18 +40,20 @@ export const SignUp = () => {
                 lastName: "",
                 email: "",
                 password: "",
-                repeatedPassword: "",
+                passwordRepeat: "",
               }}
               validationSchema={Yup.object().shape({
                 firstName: Yup.string().required("Обов'язкове поле!"),
                 lastName: Yup.string().required("Обов'язкове поле!"),
                 email: Yup.string().email().required("Обов'язкове поле!"),
                 password: Yup.string().required("Обов'язкове поле!"),
-                repeatedPassword: Yup.string()
+                passwordRepeat: Yup.string()
                   .oneOf([Yup.ref("password"), null], "Паролі не співпадають!")
                   .required("Обов'язкове поле!"),
               })}
-              onSubmit={(values, { setSubmitting }) => {}}
+              onSubmit={(values, { setSubmitting }) => {
+                dispatch(register(values, setSubmitting, history));
+              }}
             >
               {({
                 errors,
@@ -102,24 +117,28 @@ export const SignUp = () => {
                   <CustomPasswordField
                     label="Підтвердження паролю"
                     placeholder="Підтвердіть пароль"
-                    value={values.repeatedPassword}
-                    name="repeatedPassword"
+                    value={values.passwordRepeat}
+                    name="passwordRepeat"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                      touched.repeatedPassword && errors.repeatedPassword
+                      touched.passwordRepeat && errors.passwordRepeat
                     )}
                     helperText={
-                      (touched.repeatedPassword && errors.repeatedPassword) ||
-                      ""
+                      (touched.passwordRepeat && errors.passwordRepeat) || ""
                     }
                   />
                   <StyledButton
                     type="submit"
                     sx={{ my: 2, py: 1 }}
                     variant="contained"
+                    disabled={isSubmitting}
                   >
-                    Зареєструватися
+                    {isSubmitting ? (
+                      <CircularProgress size={25} />
+                    ) : (
+                      <>Зареєструватися</>
+                    )}
                   </StyledButton>
                 </form>
               )}

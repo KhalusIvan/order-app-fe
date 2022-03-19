@@ -17,20 +17,6 @@ interface ActionProps {
   disableTooltip?: boolean;
 }
 
-export const Messages = ({
-  total,
-  onClick,
-  disableTooltip = false,
-}: ActionProps) => (
-  <ActionItem
-    title="My Messages"
-    icon={MailIcon}
-    onClick={onClick}
-    badgeContent={total}
-    disableTooltip={disableTooltip}
-  />
-);
-
 export const More = ({ onClick, disableTooltip = false }: ActionProps) => (
   <ActionItem
     title="More"

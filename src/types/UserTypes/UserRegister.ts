@@ -1,5 +1,4 @@
 export type UserRegister = {
-  id: string;
   firstName: string;
   lastName: string;
   email: string;

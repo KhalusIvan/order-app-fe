@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { getAlerts } from "../../redux/selector/alertSelector";
+import { getAlertsSelector } from "../../redux/selector/alertSelector";
 import { useSelector } from "react-redux";
 import { Alert } from "@mui/material";
 import { Alert as AlertType } from "../../types";
 
 export const Alerts: FC = () => {
-  const alerts: AlertType[] = useSelector(getAlerts);
+  const alerts: AlertType[] = useSelector(getAlertsSelector);
   return (
     <div
       style={{

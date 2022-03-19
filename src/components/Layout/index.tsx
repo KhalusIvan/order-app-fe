@@ -8,16 +8,13 @@ import { Footer } from "../Footer";
 import { FOOTER_HEIGHT } from "../../utils/constants";
 
 export const Layout: FC = ({ children }) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const toggleNavigation = () => setOpen((status) => !status);
-
   return (
     <LayoutWrapper>
       <ContentWrapper>
         <Box component="header">
-          <Header toggleNavigation={toggleNavigation} />
+          <Header />
         </Box>
-        <Navigation open={open} handleClose={toggleNavigation} />
+        <Navigation />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
           {children}

@@ -1,11 +1,7 @@
-import { styled, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 export const PageTitle = ({ title }: { title: string }) => (
-  <StyledPageTitle variant="h2" component="h3" color="textSecondary">
+  <Typography variant="h3" component="h4" color="textSecondary">
     {title}
-  </StyledPageTitle>
+  </Typography>
 );
-
-const StyledPageTitle = styled(Typography)<{ component: string }>`
-  text-transform: uppercase;
-`;

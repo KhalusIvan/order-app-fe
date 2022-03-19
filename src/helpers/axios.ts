@@ -16,9 +16,16 @@ const getAxiosInstance = (
   });
 
   instance.interceptors.response.use(
-    (res) => {
-      console.log(res);
-      return res;
+    (response) => {
+      if (response?.data.severity && response?.data.text) {
+        const alert: Alert = {
+          id: Date.now(),
+          severity: response?.data.severity,
+          text: response?.data.text,
+        };
+        dispatch(setAlert(alert));
+      }
+      return response;
     },
     (err) => {
       if (err?.response?.status === 401) {
@@ -29,23 +36,20 @@ const getAxiosInstance = (
         ) {
           window.location.replace(`/auth/sign-in`);
         }
-      }
-      if (err?.response?.status >= 500) {
+      } else if (err?.response?.data.severity && err?.response?.data.text) {
+        const alert: Alert = {
+          id: Date.now(),
+          severity: err?.response?.data.severity,
+          text: err?.response?.data.text,
+        };
+        dispatch(setAlert(alert));
+      } else {
         const alert: Alert = {
           id: Date.now(),
           severity: "error",
           text: "Проблеми сервера! Спробуйте пізніше",
         };
         dispatch(setAlert(alert));
-      } else {
-        if (err?.response?.data.severity && err?.response?.data.text) {
-          const alert: Alert = {
-            id: Date.now(),
-            severity: err?.response?.data.severity,
-            text: err?.response?.data.text,
-          };
-          dispatch(setAlert(alert));
-        }
       }
       throw err;
     }

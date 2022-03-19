@@ -1,9 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Box, Menu, MenuItem } from "@mui/material";
 
-import { Messages, Notifications, SignOut, Settings } from "../../Actions";
-import { ThemeSwitcher } from "../ThemeSwitcher";
-import { ThemeModeContext } from "../../../contexts";
+import { Notifications, SignOut, Settings } from "../../Actions";
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -18,8 +16,6 @@ export const MobileMenu = ({
   handleMenuClose,
   anchorEl,
 }: MobileMenuProps) => {
-  const { toggleThemeMode } = useContext(ThemeModeContext);
-
   return (
     <Menu
       anchorEl={anchorEl}
@@ -37,14 +33,6 @@ export const MobileMenu = ({
       onClose={handleMenuClose}
     >
       <Box sx={{ textAlign: "center" }}>
-        <MenuItem onClick={toggleThemeMode}>
-          <ThemeSwitcher disableTooltip />
-          Toggle Theme
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <Messages total={15} disableTooltip />
-          Messages
-        </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <Notifications total={20} disableTooltip />
           Notifications

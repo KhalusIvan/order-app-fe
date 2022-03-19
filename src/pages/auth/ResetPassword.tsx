@@ -1,4 +1,11 @@
-import { Paper, Typography, Grid, Button, styled } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Grid,
+  Button,
+  styled,
+  CircularProgress,
+} from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { NavLink } from "react-router-dom";
 
@@ -9,7 +16,12 @@ import Lock from "../../static/icons/lock.png";
 
 import { CustomTextField } from "../../components/Inputs/CustomTextField";
 
+import { resetPassword } from "../../redux/operation/userOperation";
+import { useDispatch } from "react-redux";
+
 export const ResetPassword = () => {
+  const dispatch = useDispatch();
+
   return (
     <>
       <Helmet title="Sign up" />
@@ -34,7 +46,9 @@ export const ResetPassword = () => {
               validationSchema={Yup.object().shape({
                 email: Yup.string().email().required("Обов'язкове поле!"),
               })}
-              onSubmit={(values, { setSubmitting }) => {}}
+              onSubmit={(values, { setSubmitting }) => {
+                dispatch(resetPassword(values, setSubmitting));
+              }}
             >
               {({
                 errors,
@@ -44,7 +58,6 @@ export const ResetPassword = () => {
                 handleChange,
                 values,
                 touched,
-                setFieldValue,
               }) => (
                 <form style={{ height: "100%" }} onSubmit={handleSubmit}>
                   <CustomTextField
@@ -61,14 +74,19 @@ export const ResetPassword = () => {
                     type="submit"
                     sx={{ my: 2, py: 1 }}
                     variant="contained"
+                    disabled={isSubmitting}
                   >
-                    Відновити пароль
+                    {isSubmitting ? (
+                      <CircularProgress size={25} />
+                    ) : (
+                      <>Відновити пароль</>
+                    )}
                   </StyledButton>
                 </form>
               )}
             </Formik>
             <Typography align="center" variant="body2" sx={{ mt: 4 }}>
-              Повернутися до <NavLink to={`/auth/sign-in`}>Авторизація</NavLink>
+              Повернутися до <NavLink to={`/auth/sign-in`}>Авторизації</NavLink>
             </Typography>
           </Paper>
         </Grid>

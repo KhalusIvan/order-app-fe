@@ -9,7 +9,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Helmet } from "react-helmet-async";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -17,10 +17,11 @@ import * as Yup from "yup";
 import { CustomTextField } from "../../components/Inputs/CustomTextField";
 import { CustomPasswordField } from "../../components/Inputs/CustomPasswordField";
 
-import { signIn } from "../../redux/operation/userAuthOperation";
+import { signIn } from "../../redux/operation/userOperation";
 import { useDispatch } from "react-redux";
 
 export const SignIn = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   return (
     <>
@@ -47,7 +48,7 @@ export const SignIn = () => {
                 password: Yup.string().required("Обов'язкове поле!"),
               })}
               onSubmit={(values, { setSubmitting }) => {
-                dispatch(signIn(values, setSubmitting));
+                dispatch(signIn(values, setSubmitting, history));
               }}
             >
               {({

@@ -14,11 +14,25 @@ import {
 import { SignIn } from "../pages/auth/SignIn";
 import { SignUp } from "../pages/auth/SignUp";
 import { ResetPassword } from "../pages/auth/ResetPassword";
+import { ConfirmAccount } from "../pages/auth/ConfirmAccount";
+import { ConfirmPassword } from "../pages/auth/ConfirmPassword";
+
+import { Manufacturer } from "../pages/Manufacturer/Manufacturer";
 import { Home } from "../pages/Home";
 
 import { Route } from "../types/Route";
 
 const routes: Array<Route> = [
+  //First page
+  {
+    title: "Welcome",
+    component: Home,
+    path: "/",
+    icon: HomeIcon,
+    sidebar: false,
+    authentificated: false,
+  },
+  //Auth
   {
     title: "Sign in",
     component: SignIn,
@@ -40,70 +54,75 @@ const routes: Array<Route> = [
     sidebar: false,
     authentificated: false,
   },
-  //
   {
-    title: "welcome",
-    component: Home,
-    path: "/",
-    icon: HomeIcon,
-    appendDivider: true,
-    sidebar: true,
+    title: "Confirm account",
+    component: ConfirmAccount,
+    path: "/auth/confirmation/:token",
+    sidebar: false,
     authentificated: false,
   },
   {
-    title: "Dashboard",
+    title: "Confirm account",
+    component: ConfirmAccount,
+    path: "/auth/confirmation/:token",
+    sidebar: false,
+    authentificated: false,
+  },
+  {
+    title: "Confirm password",
+    component: ConfirmPassword,
+    path: "/auth/confirmation_password/:token",
+    sidebar: false,
+    authentificated: false,
+  },
+  //Dashboard
+  {
+    title: "Панель",
     path: "/dashboard",
     icon: DashboardIcon,
     sidebar: true,
     authentificated: true,
   },
   {
-    title: "GitHub",
-    icon: GitHubIcon,
-    subRoutes: [
-      {
-        title: "Public Repos",
-        path: "/gh/public",
-        icon: PublicIcon,
-      },
-      {
-        title: "Private Repos",
-        path: "/gh/private",
-        icon: PrivateIcon,
-      },
-    ],
+    title: "Замовлення",
+    path: "/order",
+    icon: DashboardIcon,
     sidebar: true,
     authentificated: true,
   },
   {
-    title: "Code Editor",
-    path: "/code-editor",
-    icon: CodeIcon,
-    appendDivider: true,
+    title: "Покупці",
+    path: "/customer",
+    icon: DashboardIcon,
     sidebar: true,
     authentificated: true,
   },
   {
-    title: "My Account",
-    path: "/account",
-    icon: UserIcon,
-    subRoutes: [
-      {
-        title: "Settings",
-        path: "/account/settings",
-        icon: SettingsIcon,
-      },
-      {
-        title: "Preferences",
-        path: "/account/preferences",
-        icon: ListIcon,
-      },
-      {
-        title: "Billing",
-        path: "/account/billing",
-        icon: BillingIcon,
-      },
-    ],
+    title: "Виробники",
+    component: Manufacturer,
+    path: "/manufacturer",
+    icon: DashboardIcon,
+    sidebar: true,
+    authentificated: true,
+  },
+  {
+    title: "Продукція",
+    path: "/item",
+    icon: DashboardIcon,
+    sidebar: true,
+    authentificated: true,
+  },
+  {
+    title: "Штат",
+    path: "/employee",
+    icon: DashboardIcon,
+    sidebar: true,
+    authentificated: true,
+  },
+  {
+    title: "Простір",
+    path: "/workspace",
+    icon: DashboardIcon,
     sidebar: true,
     authentificated: true,
   },

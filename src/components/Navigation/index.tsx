@@ -5,14 +5,10 @@ import { Routes } from "./Routes";
 import { navClosedMixin, navOpenedMixin } from "../../styles/mixins";
 
 import { DRAWER_WIDTH } from "../../utils/constants";
-interface NavigationProps {
-  open: boolean | undefined;
-  handleClose: () => void;
-}
 
-export const Navigation = ({ open, handleClose }: NavigationProps) => {
+export const Navigation = () => {
   return (
-    <Drawer variant="permanent" open={open} onClose={handleClose}>
+    <Drawer variant="permanent" open={true} onClose={() => {}}>
       <DrawerHeader />
       <Routes />
     </Drawer>

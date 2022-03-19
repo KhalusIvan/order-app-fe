@@ -1,5 +1,5 @@
 import { RootState } from "../store";
 
-export const getAlerts = (state: RootState) => {
+export const getAlertsSelector = (state: RootState) => {
   return state.alertReducer;
 };

@@ -1,17 +1,18 @@
 import { Route } from "./Route";
 import { MenuItem } from "./MenuItem";
-import { User } from "./User";
-import { UserSignIn } from "./UserSignIn";
-import { UserRegister } from "./UserRegister";
 import { Alert } from "./Alert";
+import { Loader } from "./Loader";
+
 import { Workspace } from "./Workspace";
+import { Currency } from "./Currency";
+import { Manufacturer } from "./Manufacturer";
 
 export type {
   Route,
   MenuItem,
-  User,
-  UserSignIn,
-  UserRegister,
   Alert,
+  Loader,
   Workspace,
+  Currency,
+  Manufacturer,
 };
