@@ -9,5 +9,5 @@ interface ManufacturerState {
   count?: number;
   pages?: number;
   rows: Manufacturer[];
-  currency?: { number: number; currency: Currency }[];
+  currency?: { id: number; name: string; number: number }[];
 }

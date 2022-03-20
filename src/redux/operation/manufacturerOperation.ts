@@ -5,6 +5,7 @@ import getAxiosInstance from "../../helpers/axios";
 import { setBearerToken } from "../bearerToken";
 import { getManufacturersAction } from "../duck/manufacturerDuck";
 import { loaderAddAction, loaderRemoveAction } from "../duck/loaderDuck";
+import { Currency } from "../../types";
 
 export const getManufacturers =
   (): ThunkAction<void, RootState, null, Action<string>> =>
@@ -16,7 +17,18 @@ export const getManufacturers =
         "api/manufacturer?filter=true&page=1",
         setBearerToken()
       );
-      dispatch(getManufacturersAction(response.data));
+      dispatch(
+        getManufacturersAction({
+          ...response.data,
+          currency: response.data.currency.map(
+            (el: { number: number; currency: Currency }) => ({
+              id: el.currency.id,
+              name: `${el.currency.name} (${el.currency.code})`,
+              number: el.number,
+            })
+          ),
+        })
+      );
     } catch (err) {
     } finally {
       dispatch(loaderRemoveAction("manufacturer"));

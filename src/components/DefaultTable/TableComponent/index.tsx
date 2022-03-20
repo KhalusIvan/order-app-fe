@@ -7,7 +7,9 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Pagination,
 } from "@mui/material";
+import { useHistory, useLocation } from "react-router-dom";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -15,49 +17,66 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
+interface TableComponentProps {
+  columns: { id: number; title: string; object: string }[];
+  rows: { id: number; [key: string]: any }[];
+  width?: number;
+  pages?: number;
 }
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+export const TableComponent = ({
+  columns,
+  rows,
+  width,
+  pages,
+}: TableComponentProps) => {
+  const params = new URLSearchParams(useLocation().search);
+  const history = useHistory();
+  const page = params.has("page") ? Number(params.get("page")) : 1;
 
-export const TableComponent = () => (
-  <TableContainer component={Paper}>
-    <Table sx={{ minWidth: 700 }} aria-label="customized table">
-      <TableHead>
-        <TableRow>
-          <TableCell>Dessert (100g serving)</TableCell>
-          <TableCell align="right">Calories</TableCell>
-          <TableCell align="right">Fat&nbsp;(g)</TableCell>
-          <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-          <TableCell align="right">Protein&nbsp;(g)</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {rows.map((row) => (
-          <StyledTableRow key={row.name}>
-            <TableCell component="th" scope="row">
-              {row.name}
-            </TableCell>
-            <TableCell align="right">{row.calories}</TableCell>
-            <TableCell align="right">{row.fat}</TableCell>
-            <TableCell align="right">{row.carbs}</TableCell>
-            <TableCell align="right">{row.protein}</TableCell>
-          </StyledTableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
+  return (
+    <TableContainer sx={{ width: width || "100%" }} component={Paper}>
+      <Table aria-label="customized table">
+        <TableHead>
+          <TableRow>
+            {columns.map((el) => (
+              <TableCell align="center" key={el.id}>
+                {el.title}
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <StyledTableRow key={row.id}>
+              {columns.map((el) => (
+                <TableCell align="center" key={el.id}>
+                  {row[el.object]}
+                </TableCell>
+              ))}
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Pagination
+        sx={{
+          width: width || "100%",
+          display: "flex",
+          justifyContent: "center",
+          my: 1,
+        }}
+        count={pages}
+        page={+page}
+        onChange={(e, newPage) => {
+          params.delete("page");
+          if (newPage > 1) params.append("page", `${newPage}`);
+          history.push({ search: params.toString() });
+        }}
+        variant="outlined"
+        color="primary"
+        showFirstButton
+        showLastButton
+      />
+    </TableContainer>
+  );
+};

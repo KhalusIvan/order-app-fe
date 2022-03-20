@@ -5,7 +5,7 @@ import getAxiosInstance from "../../helpers/axios";
 import { setBearerToken } from "../bearerToken";
 import { RouteComponentProps } from "react-router-dom";
 import { UserRegister, UserSignIn } from "../../types/UserTypes";
-import { signInAction } from "../duck/userDuck";
+import { signInAction, checkedAction } from "../duck/userDuck";
 import { loaderAddAction, loaderRemoveAction } from "../duck/loaderDuck";
 
 export const checkUser =
@@ -24,6 +24,7 @@ export const checkUser =
       }
     } catch (err) {
     } finally {
+      dispatch(checkedAction());
       dispatch(loaderRemoveAction("check"));
     }
   };

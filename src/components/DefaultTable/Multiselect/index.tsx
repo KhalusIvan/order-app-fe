@@ -1,15 +1,18 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { useTheme, styled } from "@mui/material/styles";
-import Popper from "@mui/material/Popper";
+import Popper, { PopperProps } from "@mui/material/Popper";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import SettingsIcon from "@mui/icons-material/Settings";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
 import ButtonBase from "@mui/material/ButtonBase";
+import Grid from "@mui/material/Grid";
 import InputBase from "@mui/material/InputBase";
 import Box from "@mui/material/Box";
+import { useHistory, useLocation } from "react-router-dom";
 
 const StyledAutocompletePopper = styled("div")(({ theme }) => ({
   [`& .${autocompleteClasses.paper}`]: {
@@ -41,7 +44,7 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
   },
 }));
 
-function PopperComponent(props) {
+function PopperComponent(props: PopperProps) {
   const { disablePortal, anchorEl, open, ...other } = props;
   return <StyledAutocompletePopper {...other} />;
 }
@@ -110,24 +113,46 @@ const Button = styled(ButtonBase)(({ theme }) => ({
   },
 }));
 
-export const Multiselect = () => {
+type DataType = { id: number; name: string; number: number };
+
+interface MultiselectProps {
+  label: string;
+  data: DataType[];
+  loading: boolean;
+  urlName: string;
+}
+
+export const Multiselect = ({
+  label,
+  data,
+  loading,
+  urlName,
+}: MultiselectProps) => {
+  const params = new URLSearchParams(useLocation().search);
+  const fromUrl =
+    params
+      .get(urlName)
+      ?.split(",")
+      .map((el) => +el) || [];
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-  const [value, setValue] = React.useState([labels[1], labels[11]]);
-  const [pendingValue, setPendingValue] = React.useState([]);
+  const [pendingValue, setPendingValue] = React.useState<number[]>(fromUrl);
   const theme = useTheme();
+  const history = useHistory();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(value);
-    //setPendingValue(value);
+    setPendingValue(fromUrl);
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    setValue(pendingValue);
     if (anchorEl) {
       anchorEl.focus();
     }
     setAnchorEl(null);
+    params.delete(urlName);
+    params.delete("page");
+    if (pendingValue.length > 0) params.append(urlName, pendingValue.join(","));
+    history.push({ search: params.toString() });
   };
 
   const open = Boolean(anchorEl);
@@ -135,10 +160,30 @@ export const Multiselect = () => {
 
   return (
     <React.Fragment>
-      <Box sx={{ width: 221, fontSize: 13 }}>
-        <Button disableRipple aria-describedby={id} onClick={handleClick}>
-          <span>Labels</span>
-          <SettingsIcon />
+      <Box
+        sx={{ width: 180, fontSize: 15, mx: 2, height: 32 }}
+        style={{ borderBottom: "1px solid black" }}
+      >
+        <Button
+          disableRipple
+          aria-describedby={id}
+          onClick={handleClick}
+          sx={{ my: 1 }}
+        >
+          <span
+            style={{
+              opacity: fromUrl.length > 0 ? 1 : 0.5,
+              fontWeight: 300,
+              fontSize: 15,
+            }}
+          >
+            {fromUrl.length > 0
+              ? data
+                  .filter((el) => fromUrl.includes(el.id))
+                  .map((el) => el.name)
+              : label}
+          </span>
+          {!!anchorEl ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
         </Button>
       </Box>
       <StyledPopper
@@ -157,18 +202,17 @@ export const Multiselect = () => {
                   handleClose();
                 }
               }}
-              value={pendingValue}
+              value={data.filter((el) => pendingValue.includes(el.id))}
               onChange={(event, newValue, reason) => {
                 if (event.type === "keydown" && reason === "removeOption") {
                   return;
                 }
-                //setPendingValue(newValue);
-                console.log(newValue);
+                setPendingValue(newValue.map((el) => el.id));
               }}
               disableCloseOnSelect
               PopperComponent={PopperComponent}
               renderTags={() => null}
-              noOptionsText="No labels"
+              noOptionsText="Нічого не знайдено"
               renderOption={(props, option, { selected }) => (
                 <li {...props}>
                   <Box
@@ -188,9 +232,10 @@ export const Multiselect = () => {
                       mr: 1,
                       mt: "2px",
                     }}
-                    style={{ backgroundColor: option.color }}
                   />
-                  <Box
+                  <Grid
+                    container
+                    justifyContent="space-between"
                     sx={{
                       flexGrow: 1,
                       "& span": {
@@ -199,12 +244,12 @@ export const Multiselect = () => {
                             ? "#586069"
                             : "#8b949e",
                       },
+                      mr: 3,
                     }}
                   >
                     {option.name}
-                    <br />
-                    <span>{option.description}</span>
-                  </Box>
+                    <span>{option.number}</span>
+                  </Grid>
                   <Box
                     component={CloseIcon}
                     sx={{ opacity: 0.6, width: 18, height: 18 }}
@@ -214,12 +259,12 @@ export const Multiselect = () => {
                   />
                 </li>
               )}
-              options={[...labels].sort((a, b) => {
+              options={[...data].sort((a, b) => {
                 // Display the selected labels first.
-                let ai = value.indexOf(a);
-                ai = ai === -1 ? value.length + labels.indexOf(a) : ai;
-                let bi = value.indexOf(b);
-                bi = bi === -1 ? value.length + labels.indexOf(b) : bi;
+                let ai = fromUrl.findIndex((el: number) => el === a.id);
+                ai = ai === -1 ? fromUrl.length + data.indexOf(a) : ai;
+                let bi = fromUrl.findIndex((el: number) => el === b.id);
+                bi = bi === -1 ? fromUrl.length + data.indexOf(b) : bi;
                 return ai - bi;
               })}
               getOptionLabel={(option) => option.name}
@@ -228,7 +273,7 @@ export const Multiselect = () => {
                   ref={params.InputProps.ref}
                   inputProps={params.inputProps}
                   autoFocus
-                  placeholder="Filter labels"
+                  placeholder="Пошук"
                 />
               )}
             />
@@ -238,97 +283,3 @@ export const Multiselect = () => {
     </React.Fragment>
   );
 };
-
-// From https://github.com/abdonrd/github-labels
-const labels = [
-  {
-    name: "good first issue",
-    color: "#7057ff",
-    description: "Good for newcomers",
-  },
-  {
-    name: "help wanted",
-    color: "#008672",
-    description: "Extra attention is needed",
-  },
-  {
-    name: "priority: critical",
-    color: "#b60205",
-    description: "",
-  },
-  {
-    name: "priority: high",
-    color: "#d93f0b",
-    description: "",
-  },
-  {
-    name: "priority: low",
-    color: "#0e8a16",
-    description: "",
-  },
-  {
-    name: "priority: medium",
-    color: "#fbca04",
-    description: "",
-  },
-  {
-    name: "status: can't reproduce",
-    color: "#fec1c1",
-    description: "",
-  },
-  {
-    name: "status: confirmed",
-    color: "#215cea",
-    description: "",
-  },
-  {
-    name: "status: duplicate",
-    color: "#cfd3d7",
-    description: "This issue or pull request already exists",
-  },
-  {
-    name: "status: needs information",
-    color: "#fef2c0",
-    description: "",
-  },
-  {
-    name: "status: wont do/fix",
-    color: "#eeeeee",
-    description: "This will not be worked on",
-  },
-  {
-    name: "type: bug",
-    color: "#d73a4a",
-    description: "Something isn't working",
-  },
-  {
-    name: "type: discussion",
-    color: "#d4c5f9",
-    description: "",
-  },
-  {
-    name: "type: documentation",
-    color: "#006b75",
-    description: "",
-  },
-  {
-    name: "type: enhancement",
-    color: "#84b6eb",
-    description: "",
-  },
-  {
-    name: "type: epic",
-    color: "#3e4b9e",
-    description: "A theme of work that contain sub-tasks",
-  },
-  {
-    name: "type: feature request",
-    color: "#fbca04",
-    description: "New feature or request",
-  },
-  {
-    name: "type: question",
-    color: "#d876e3",
-    description: "Further information is requested",
-  },
-];

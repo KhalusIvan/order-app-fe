@@ -1,10 +1,19 @@
 import { User } from "../../types/UserTypes";
 
-enum actions {
-  SIGN_IN = "SIGN_IN",
+interface UserState {
+  user: User | null;
+  checked: boolean;
 }
 
-const initialState: User | null = null;
+enum actions {
+  SIGN_IN = "SIGN_IN",
+  CHECKED = "CHECKED",
+}
+
+const initialState: UserState | null = {
+  user: null,
+  checked: false,
+};
 
 export function signInAction(user: User) {
   const action: CustomAction = {
@@ -14,13 +23,23 @@ export function signInAction(user: User) {
   return action;
 }
 
+export function checkedAction() {
+  const action: CustomAction = {
+    type: actions.CHECKED,
+    payload: true,
+  };
+  return action;
+}
+
 const userReducer = (
-  state: User | null = initialState,
+  state: UserState = initialState,
   action: CustomAction
-): User | null => {
+): UserState => {
   switch (action.type) {
     case actions.SIGN_IN:
-      return action.payload;
+      return { ...state, user: action.payload.user };
+    case actions.CHECKED:
+      return { ...state, checked: action.payload };
   }
   return state;
 };
