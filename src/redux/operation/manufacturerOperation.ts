@@ -8,28 +8,37 @@ import { loaderAddAction, loaderRemoveAction } from "../duck/loaderDuck";
 import { Currency } from "../../types";
 
 export const getManufacturers =
-  (): ThunkAction<void, RootState, null, Action<string>> =>
+  (params: string): ThunkAction<void, RootState, null, Action<string>> =>
   async (dispatch, getState) => {
     dispatch(loaderAddAction("manufacturer"));
     const axios = getAxiosInstance(dispatch);
     try {
       const response = await axios.get(
-        "api/manufacturer?filter=true&page=1",
+        `api/manufacturer?${params}`,
         setBearerToken()
       );
-      dispatch(
-        getManufacturersAction({
-          ...response.data,
-          currency: response.data.currency.map(
-            (el: { number: number; currency: Currency }) => ({
-              id: el.currency.id,
-              name: `${el.currency.name} (${el.currency.code})`,
-              number: el.number,
-            })
-          ),
-        })
-      );
+      if (params.includes("filter=true")) {
+        dispatch(
+          getManufacturersAction({
+            ...response.data,
+            currency: response.data.currency.map(
+              (el: { number: number; currency: Currency }) => ({
+                id: el.currency.id,
+                name: `${el.currency.name} (${el.currency.code})`,
+                number: el.number,
+              })
+            ),
+          })
+        );
+      } else {
+        dispatch(
+          getManufacturersAction({
+            ...response.data,
+          })
+        );
+      }
     } catch (err) {
+      console.log(err);
     } finally {
       dispatch(loaderRemoveAction("manufacturer"));
     }

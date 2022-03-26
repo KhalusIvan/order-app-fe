@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Divider, Grid } from "@mui/material";
+import { Divider, Grid, Button } from "@mui/material";
 import { PageTitle } from "../../components/PageTitle";
 import { TableComponent } from "../../components/DefaultTable/TableComponent";
 
@@ -15,21 +15,41 @@ import { Multiselect } from "../../components/DefaultTable/Multiselect";
 import { Loader } from "../../components/Loader";
 
 import columns from "./components/columns";
+import { useLocation } from "react-router-dom";
 
 export const Manufacturer = () => {
   const dispatch = useDispatch();
   const data = useSelector(getManufacturersSelector);
   const isLoading = useSelector(getLoaderSelector("manufacturer"));
+  const params = new URLSearchParams(useLocation().search);
+  const [isFirst, setIsFirst] = useState<boolean>(true);
+  const [dialog, setDialog] = useState<{ open: boolean; id: number | null }>({
+    open: false,
+    id: null,
+  });
 
   useEffect(() => {
-    dispatch(getManufacturers());
-  }, []);
+    if (!params.has("page")) params.append("page", "1");
+    if (isFirst) {
+      params.append("filter", "true");
+      setIsFirst(false);
+    }
+    dispatch(getManufacturers(params.toString().replaceAll("%2C", ",")));
+  }, [params.toString()]);
 
-  console.log(data);
   return (
     <>
       <Helmet title="Manufacturer" />
-      <PageTitle title={"Виробники"} />
+      <Grid container justifyContent="space-between" alignItems="center">
+        <PageTitle title={"Виробники"} />
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => setDialog({ open: true, id: null })}
+        >
+          Додати виробника
+        </Button>
+      </Grid>
       <Divider sx={{ my: 1 }} />
       <Grid container sx={{ my: 3 }}>
         <Search />

@@ -20,7 +20,7 @@ const manufacturerReducer = (
 ): ManufacturerState => {
   switch (action.type) {
     case actions.MANUFACTURER_GET_ALL:
-      return action.payload;
+      return { ...state, ...action.payload };
   }
   return state;
 };

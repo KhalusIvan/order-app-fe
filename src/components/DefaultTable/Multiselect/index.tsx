@@ -175,12 +175,16 @@ export const Multiselect = ({
               opacity: fromUrl.length > 0 ? 1 : 0.5,
               fontWeight: 300,
               fontSize: 15,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
           >
             {fromUrl.length > 0
               ? data
                   .filter((el) => fromUrl.includes(el.id))
                   .map((el) => el.name)
+                  ?.join(", ")
               : label}
           </span>
           {!!anchorEl ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
