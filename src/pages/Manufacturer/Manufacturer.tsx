@@ -6,13 +6,17 @@ import { PageTitle } from "../../components/PageTitle";
 import { TableComponent } from "../../components/DefaultTable/TableComponent";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getManufacturers } from "../../redux/operation/manufacturerOperation";
+import {
+  getManufacturers,
+  getManufacturerCurrencies,
+} from "../../redux/operation/manufacturerOperation";
 import { getManufacturersSelector } from "../../redux/selector/manufacturerSelector";
 import { getLoaderSelector } from "../../redux/selector/loaderSelector";
 
 import { Search } from "../../components/DefaultTable/Search";
 import { Multiselect } from "../../components/DefaultTable/Multiselect";
 import { Loader } from "../../components/Loader";
+import { DialogWindow } from "./components/DialogWindow";
 
 import columns from "./components/columns";
 import { useLocation } from "react-router-dom";
@@ -27,6 +31,14 @@ export const Manufacturer = () => {
     open: false,
     id: null,
   });
+
+  const handleCloseDialog = () => {
+    setDialog({ open: false, id: null });
+  };
+
+  useEffect(() => {
+    dispatch(getManufacturerCurrencies());
+  }, []);
 
   useEffect(() => {
     if (!params.has("page")) params.append("page", "1");
@@ -77,6 +89,7 @@ export const Manufacturer = () => {
           />
         )}
       </Grid>
+      <DialogWindow dialog={dialog} handleCloseDialog={handleCloseDialog} />
     </>
   );
 };

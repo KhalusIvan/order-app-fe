@@ -2,7 +2,12 @@ type DispatchType = (args: ArticleAction) => ArticleAction;
 
 type CustomAction = {
   type: string;
-  payload: Alert | User | ManufacturerState | string;
+  payload:
+    | Alert
+    | User
+    | ManufacturerState
+    | string
+    | { id: number; name: string }[];
 };
 
 interface ManufacturerState {
@@ -10,4 +15,5 @@ interface ManufacturerState {
   pages?: number;
   rows: Manufacturer[];
   currency?: { id: number; name: string; number: number }[];
+  currencyList?: { id: number; name: string }[];
 }
