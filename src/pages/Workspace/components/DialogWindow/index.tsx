@@ -1,7 +1,4 @@
-import {
-  getManufacturerByIdSelector,
-  getManufacturerCurrencyListSelector,
-} from "../../../../redux/selector/manufacturerSelector";
+import { getWorkspaceByIdSelector } from "../../../../redux/selector/workspaceSelector";
 import { useSelector } from "react-redux";
 import {
   Dialog,
@@ -12,11 +9,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { CustomTextField } from "../../../../components/Inputs/CustomTextField";
-import { CustomAutocomplete } from "../../../../components/Inputs/CustomAutocomplete";
 import {
-  createManufacturer,
-  updateManufacturer,
-} from "../../../../redux/operation/manufacturerOperation";
+  createWorkspace,
+  updateWorkspace,
+} from "../../../../redux/operation/workspaceOperation";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
@@ -31,8 +27,7 @@ interface DialogProps {
 }
 
 export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
-  const item = useSelector(getManufacturerByIdSelector(dialog.id));
-  const currencies = useSelector(getManufacturerCurrencyListSelector);
+  const item = useSelector(getWorkspaceByIdSelector(dialog.id));
   const dispatch = useDispatch();
   const params = new URLSearchParams(useLocation().search);
 
@@ -44,25 +39,22 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
       fullWidth
     >
       <DialogTitle id="alert-dialog-title">
-        {dialog.id ? "Редагування виробника" : "Створення виробника"}
+        {dialog.id ? "Редагування простору" : "Створення простору"}
       </DialogTitle>
       <Formik
         initialValues={{
           name: item?.name || "",
-          currency: item?.currency || null,
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().required(""),
-          currency: Yup.object().required(""),
         })}
         onSubmit={(values, { setSubmitting }) => {
           if (item) {
             dispatch(
-              updateManufacturer(
+              updateWorkspace(
                 item.id,
                 {
                   name: values.name,
-                  currencyId: values.currency?.id,
                 },
                 params,
                 setSubmitting,
@@ -71,10 +63,9 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             );
           } else {
             dispatch(
-              createManufacturer(
+              createWorkspace(
                 {
                   name: values.name,
-                  currencyId: values.currency?.id,
                 },
                 params,
                 setSubmitting,
@@ -105,17 +96,6 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                 onChange={handleChange}
                 error={Boolean(touched.name && errors.name)}
                 helperText={(touched.name && errors.name)?.toString() || ""}
-              />
-              <CustomAutocomplete
-                label="Валюта"
-                placeholder="Виберіть валюту"
-                name="currency"
-                value={values.currency}
-                error={Boolean(touched.currency && errors.currency)}
-                loading={false}
-                options={currencies}
-                setFieldValue={setFieldValue}
-                onBlur={handleBlur}
               />
             </DialogContent>
             <DialogActions>

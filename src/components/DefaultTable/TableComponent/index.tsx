@@ -18,7 +18,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface TableComponentProps {
-  columns: { id: number; title: string; object: string }[];
+  columns: {
+    id: number;
+    title: string;
+    object: string;
+    callback?: (id: number | null) => void;
+  }[];
   rows: { id: number; [key: string]: any }[];
   width?: number;
   pages?: number;
@@ -49,11 +54,28 @@ export const TableComponent = ({
         <TableBody>
           {rows.map((row) => (
             <StyledTableRow key={row.id}>
-              {columns.map((el) => (
-                <TableCell align="center" key={el.id}>
-                  {row[el.object]}
-                </TableCell>
-              ))}
+              {columns.map((el) => {
+                if (el.callback) {
+                  return (
+                    <TableCell align="center" key={el.id}>
+                      <span
+                        onClick={() => el.callback && el.callback(row.id)}
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {row[el.object]}
+                      </span>
+                    </TableCell>
+                  );
+                }
+                return (
+                  <TableCell align="center" key={el.id}>
+                    <>{row[el.object]}</>
+                  </TableCell>
+                );
+              })}
             </StyledTableRow>
           ))}
         </TableBody>

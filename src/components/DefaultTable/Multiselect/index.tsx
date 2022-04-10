@@ -101,9 +101,6 @@ const Button = styled(ButtonBase)(({ theme }) => ({
   paddingBottom: 8,
   color: theme.palette.mode === "light" ? "#586069" : "#8b949e",
   fontWeight: 600,
-  "&:hover,&:focus": {
-    color: theme.palette.mode === "light" ? "#0366d6" : "#58a6ff",
-  },
   "& span": {
     width: "100%",
   },

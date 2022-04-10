@@ -32,7 +32,7 @@ export const CustomTextField = ({
           onBlur={onBlur}
           onChange={onChange}
           error={error}
-          helperText={error && helperText}
+          helperText={helperText}
           sx={{ width: 1 }}
         />
       </Box>

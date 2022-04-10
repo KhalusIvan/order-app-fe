@@ -1,4 +1,4 @@
-export type Workspace = {
+export type Role = {
   id: number;
   name: string;
 };

@@ -34,7 +34,7 @@ const getAxiosInstance = (
           !window.location.pathname.includes("/auth/") &&
           window.location.pathname !== "/"
         ) {
-          window.location.replace(`/auth/sign-in`);
+          //window.location.replace(`/auth/sign-in`);
         }
       } else if (err?.response?.data.severity && err?.response?.data.text) {
         const alert: Alert = {

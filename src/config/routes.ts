@@ -18,6 +18,7 @@ import { ConfirmAccount } from "../pages/auth/ConfirmAccount";
 import { ConfirmPassword } from "../pages/auth/ConfirmPassword";
 
 import { Manufacturer } from "../pages/Manufacturer/Manufacturer";
+import { Workspace } from "../pages/Workspace/Workspace";
 import { Home } from "../pages/Home";
 
 import { Route } from "../types/Route";
@@ -121,6 +122,7 @@ const routes: Array<Route> = [
   },
   {
     title: "Простір",
+    component: Workspace,
     path: "/workspace",
     icon: DashboardIcon,
     sidebar: true,

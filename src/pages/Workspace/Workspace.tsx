@@ -7,26 +7,23 @@ import { TableComponent } from "../../components/DefaultTable/TableComponent";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getManufacturers,
-  getManufacturerCurrencies,
-  deleteManufacturer,
-} from "../../redux/operation/manufacturerOperation";
-import { getManufacturersSelector } from "../../redux/selector/manufacturerSelector";
+  getWorkspaces,
+  deleteWorkspace,
+} from "../../redux/operation/workspaceOperation";
+import { getWorkspacesSelector } from "../../redux/selector/workspaceSelector";
 import { getLoaderSelector } from "../../redux/selector/loaderSelector";
 import { Search } from "../../components/DefaultTable/Search";
-import { Multiselect } from "../../components/DefaultTable/Multiselect";
 import { Loader } from "../../components/Loader";
 import { DialogWindow } from "./components/DialogWindow";
 
 import columns from "./components/columns";
 import { useLocation } from "react-router-dom";
 
-export const Manufacturer = () => {
+export const Workspace = () => {
   const dispatch = useDispatch();
-  const data = useSelector(getManufacturersSelector);
-  const isLoading = useSelector(getLoaderSelector("manufacturer"));
+  const data = useSelector(getWorkspacesSelector);
+  const isLoading = useSelector(getLoaderSelector("workspace"));
   const params = new URLSearchParams(useLocation().search);
-  const [isFirst, setIsFirst] = useState<boolean>(true);
   const [dialog, setDialog] = useState<{ open: boolean; id: number | null }>({
     open: false,
     id: null,
@@ -39,40 +36,26 @@ export const Manufacturer = () => {
   };
 
   useEffect(() => {
-    dispatch(getManufacturerCurrencies());
-  }, []);
-
-  useEffect(() => {
     if (!params.has("page")) params.append("page", "1");
-    if (isFirst) {
-      params.append("filter", "true");
-      setIsFirst(false);
-    }
-    dispatch(getManufacturers(params.toString().replaceAll("%2C", ",")));
+    dispatch(getWorkspaces(params.toString().replaceAll("%2C", ",")));
   }, [params.toString()]);
 
   return (
     <>
-      <Helmet title="Manufacturer" />
+      <Helmet title="Workspace" />
       <Grid container justifyContent="space-between" alignItems="center">
-        <PageTitle title={"Виробники"} />
+        <PageTitle title={"Простір"} />
         <Button
           color="primary"
           variant="contained"
           onClick={() => handleOpenDialog(null)}
         >
-          Додати виробника
+          Додати простір
         </Button>
       </Grid>
       <Divider sx={{ my: 1 }} />
       <Grid container sx={{ my: 3 }}>
         <Search />
-        <Multiselect
-          label="Валюта"
-          data={data?.currency || []}
-          loading={isLoading}
-          urlName="currencyId"
-        />
       </Grid>
       <Grid item xs={12}>
         {isLoading ? (
@@ -89,11 +72,12 @@ export const Manufacturer = () => {
             })}
             rows={data.rows.map((el) => ({
               ...el,
-              currency: `${el.currency.name} (${el.currency.code})`,
+              roleName: el.role.name,
+              name: el.workspace.name,
               delete: (
                 <IconButton
                   size="small"
-                  onClick={() => dispatch(deleteManufacturer(el.id, params))}
+                  onClick={() => dispatch(deleteWorkspace(el.id, params))}
                 >
                   <DeleteIcon />
                 </IconButton>

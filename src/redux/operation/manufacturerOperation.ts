@@ -47,6 +47,72 @@ export const getManufacturers =
     }
   };
 
+export const createManufacturer =
+  (
+    json: { name: string; currencyId: number },
+    params: URLSearchParams,
+    setSubmitting: (arg0: boolean) => void,
+    handleCloseDialog: () => void
+  ): ThunkAction<void, RootState, null, Action<string>> =>
+  async (dispatch, getState) => {
+    const axios = getAxiosInstance(dispatch);
+    try {
+      await axios.post(`api/manufacturer/create`, json, setBearerToken());
+      if (!params.has("page")) {
+        params.append("page", "1");
+      }
+      params.append("filter", "true");
+      handleCloseDialog();
+      dispatch(getManufacturers(params.toString()));
+    } catch (err) {
+      setSubmitting(false);
+    }
+  };
+
+export const updateManufacturer =
+  (
+    id: number,
+    json: { name: string; currencyId: number },
+    params: URLSearchParams,
+    setSubmitting: (arg0: boolean) => void,
+    handleCloseDialog: () => void
+  ): ThunkAction<void, RootState, null, Action<string>> =>
+  async (dispatch, getState) => {
+    const axios = getAxiosInstance(dispatch);
+    try {
+      await axios.post(`api/manufacturer/${id}/update`, json, setBearerToken());
+      if (!params.has("page")) {
+        params.append("page", "1");
+      }
+      params.append("filter", "true");
+      handleCloseDialog();
+      dispatch(getManufacturers(params.toString()));
+    } catch (err) {
+      setSubmitting(false);
+    }
+  };
+
+export const deleteManufacturer =
+  (
+    id: number,
+    params: URLSearchParams
+  ): ThunkAction<void, RootState, null, Action<string>> =>
+  async (dispatch, getState) => {
+    const axios = getAxiosInstance(dispatch);
+    try {
+      dispatch(loaderAddAction("manufacturer"));
+      await axios.delete(`api/manufacturer/${id}`, setBearerToken());
+      if (!params.has("page")) {
+        params.append("page", "1");
+      }
+      params.append("filter", "true");
+      dispatch(getManufacturers(params.toString()));
+    } catch (err) {
+    } finally {
+      dispatch(loaderRemoveAction("manufacturer"));
+    }
+  };
+
 export const getManufacturerCurrencies =
   (): ThunkAction<void, RootState, null, Action<string>> =>
   async (dispatch, getState) => {
@@ -66,7 +132,6 @@ export const getManufacturerCurrencies =
         })
       );
     } catch (err) {
-      console.log(err);
     } finally {
       dispatch(loaderRemoveAction("currency"));
     }

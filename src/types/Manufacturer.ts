@@ -1,7 +1,7 @@
 import { Currency } from "./Currency";
 
 export type Manufacturer = {
-  id: string;
+  id: number;
   name: string;
   code: string;
   currency: Currency;

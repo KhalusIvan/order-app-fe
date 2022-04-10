@@ -6,6 +6,7 @@ import { Loader } from "./Loader";
 import { Workspace } from "./Workspace";
 import { Currency } from "./Currency";
 import { Manufacturer } from "./Manufacturer";
+import { Role } from "./Role";
 
 export type {
   Route,
@@ -15,4 +16,5 @@ export type {
   Workspace,
   Currency,
   Manufacturer,
+  Role,
 };

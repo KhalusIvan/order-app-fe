@@ -6,8 +6,15 @@ export const getManufacturersSelector = (state: RootState) => {
 
 export const getManufacturerByIdSelector =
   (id: number | null) => (state: RootState) => {
-    console.log(id);
-    return state.manufacturerReducer.rows;
+    if (!id) return null;
+    const finded = state.manufacturerReducer.rows.find((el) => el.id === id);
+    return {
+      ...finded,
+      currency: {
+        ...finded.currency,
+        name: `${finded.currency.name} (${finded.currency.code})`,
+      },
+    };
   };
 
 export const getManufacturerCurrencyListSelector = (state: RootState) => {
