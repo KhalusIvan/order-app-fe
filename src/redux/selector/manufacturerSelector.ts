@@ -6,8 +6,8 @@ export const getManufacturersSelector = (state: RootState) => {
 
 export const getManufacturerByIdSelector =
   (id: number | null) => (state: RootState) => {
-    if (!id) return null;
     const finded = state.manufacturerReducer.rows.find((el) => el.id === id);
+    if (!id || !finded) return null;
     return {
       ...finded,
       currency: {
