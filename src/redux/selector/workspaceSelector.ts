@@ -11,11 +11,6 @@ export const getWorkspaceByIdSelector =
     const finded = state.workspaceReducer.rows.find(
       (el: WorkspaceRequest) => el.id === id
     );
-    return {
-      ...finded,
-      currency: {
-        ...finded.currency,
-        name: `${finded.currency.name} (${finded.currency.code})`,
-      },
-    };
+    if (!id || !finded) return null;
+    return finded;
   };

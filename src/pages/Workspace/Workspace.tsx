@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Divider, Grid, Button, IconButton } from "@mui/material";
+import { Divider, Grid, Button, IconButton, Checkbox } from "@mui/material";
 import { PageTitle } from "../../components/PageTitle";
 import { TableComponent } from "../../components/DefaultTable/TableComponent";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,19 +9,21 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getWorkspaces,
   deleteWorkspace,
+  setCurrentWorkspace,
 } from "../../redux/operation/workspaceOperation";
 import { getWorkspacesSelector } from "../../redux/selector/workspaceSelector";
 import { getLoaderSelector } from "../../redux/selector/loaderSelector";
 import { Search } from "../../components/DefaultTable/Search";
 import { Loader } from "../../components/Loader";
 import { DialogWindow } from "./components/DialogWindow";
-
+import { getUserCurrentWorkspaceSelector } from "../../redux/selector/userSelector";
 import columns from "./components/columns";
 import { useLocation } from "react-router-dom";
 
 export const Workspace = () => {
   const dispatch = useDispatch();
   const data = useSelector(getWorkspacesSelector);
+  const userWorkspace = useSelector(getUserCurrentWorkspaceSelector);
   const isLoading = useSelector(getLoaderSelector("workspace"));
   const params = new URLSearchParams(useLocation().search);
   const [dialog, setDialog] = useState<{ open: boolean; id: number | null }>({
@@ -65,13 +67,23 @@ export const Workspace = () => {
         ) : (
           <TableComponent
             columns={columns.map((el) => {
-              if (el.id === 1) {
+              if (el.id === 2) {
                 return { ...el, callback: handleOpenDialog };
               }
               return el;
             })}
             rows={data.rows.map((el) => ({
               ...el,
+              currentWorkspace: (
+                <Checkbox
+                  checked={userWorkspace === el.workspace.id}
+                  onClick={() => {
+                    dispatch(
+                      setCurrentWorkspace({ workspaceId: el.workspace.id })
+                    );
+                  }}
+                />
+              ),
               roleName: el.role.name,
               name: el.workspace.name,
               delete: (

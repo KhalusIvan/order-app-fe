@@ -28,6 +28,7 @@ interface DialogProps {
 
 export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
   const item = useSelector(getWorkspaceByIdSelector(dialog.id));
+  console.log(item);
   const dispatch = useDispatch();
   const params = new URLSearchParams(useLocation().search);
 
@@ -43,7 +44,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
       </DialogTitle>
       <Formik
         initialValues={{
-          name: item?.name || "",
+          name: item?.workspace?.name || "",
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().required(""),
@@ -52,7 +53,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
           if (item) {
             dispatch(
               updateWorkspace(
-                item.id,
+                item.workspace.id,
                 {
                   name: values.name,
                 },

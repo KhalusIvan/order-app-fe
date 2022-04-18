@@ -37,7 +37,7 @@ const userReducer = (
 ): UserState => {
   switch (action.type) {
     case actions.SIGN_IN:
-      return { ...state, user: action.payload.user };
+      return { ...state, user: action.payload };
     case actions.CHECKED:
       return { ...state, checked: action.payload };
   }

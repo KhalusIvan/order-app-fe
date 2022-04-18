@@ -5,6 +5,7 @@ import getAxiosInstance from "../../helpers/axios";
 import { setBearerToken } from "../bearerToken";
 import { getWorkspacesAction } from "../duck/workspaceDuck";
 import { loaderAddAction, loaderRemoveAction } from "../duck/loaderDuck";
+import { signInAction } from "../duck/userDuck";
 
 export const getWorkspaces =
   (params: string): ThunkAction<void, RootState, null, Action<string>> =>
@@ -70,6 +71,22 @@ export const updateWorkspace =
     } catch (err) {
       setSubmitting(false);
     }
+  };
+
+export const setCurrentWorkspace =
+  (json: {
+    workspaceId: number;
+  }): ThunkAction<void, RootState, null, Action<string>> =>
+  async (dispatch, getState) => {
+    const axios = getAxiosInstance(dispatch);
+    try {
+      const response = await axios.post(
+        `api/user/current-workspace`,
+        json,
+        setBearerToken()
+      );
+      dispatch(signInAction(response.data.user));
+    } catch (err) {}
   };
 
 export const deleteWorkspace =
