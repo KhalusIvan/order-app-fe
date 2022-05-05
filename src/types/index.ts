@@ -6,6 +6,8 @@ import { Loader } from "./Loader";
 import { Workspace } from "./Workspace";
 import { Currency } from "./Currency";
 import { Manufacturer } from "./Manufacturer";
+import { Item } from "./Item";
+import { Customer } from "./Customer";
 import { Role } from "./Role";
 
 export type {
@@ -16,5 +18,7 @@ export type {
   Workspace,
   Currency,
   Manufacturer,
+  Item,
+  Customer,
   Role,
 };

@@ -44,7 +44,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
       </DialogTitle>
       <Formik
         initialValues={{
-          name: item?.workspace?.name || "",
+          name: item?.workspace?.name || "Обов'язкове поле!",
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().required(""),

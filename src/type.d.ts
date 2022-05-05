@@ -6,6 +6,8 @@ type CustomAction = {
     | Alert
     | User
     | ManufacturerState
+    | ItemState
+    | CustomerState
     | WorkspaceState
     | string
     | { id: number; name: string }[];
@@ -17,6 +19,20 @@ interface ManufacturerState {
   rows: Manufacturer[];
   currency?: { id: number; name: string; number: number }[];
   currencyList?: { id: number; name: string }[];
+}
+
+interface ItemState {
+  count?: number;
+  pages?: number;
+  rows: Item[];
+  manufacturer?: { id: number; name: string; number: number }[];
+  manufacturerList?: { id: number; name: string }[];
+}
+
+interface CustomerState {
+  count?: number;
+  pages?: number;
+  rows: Customer[];
 }
 
 interface WorkspaceState {

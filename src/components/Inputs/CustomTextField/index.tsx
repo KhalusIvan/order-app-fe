@@ -10,6 +10,7 @@ export const CustomTextField = ({
   onChange,
   error,
   helperText,
+  type = "text",
 }: {
   label: string;
   placeholder: string;
@@ -19,6 +20,7 @@ export const CustomTextField = ({
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   error: boolean;
   helperText: string;
+  type?: string;
 }) => {
   return (
     <>
@@ -29,6 +31,7 @@ export const CustomTextField = ({
           placeholder={placeholder}
           value={value}
           name={name}
+          type={type}
           onBlur={onBlur}
           onChange={onChange}
           error={error}

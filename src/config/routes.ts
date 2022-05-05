@@ -18,6 +18,8 @@ import { ConfirmAccount } from "../pages/auth/ConfirmAccount";
 import { ConfirmPassword } from "../pages/auth/ConfirmPassword";
 
 import { Manufacturer } from "../pages/Manufacturer/Manufacturer";
+import { Item } from "../pages/Item/Item";
+import { Customer } from "../pages/Customer/Customer";
 import { Workspace } from "../pages/Workspace/Workspace";
 import { Home } from "../pages/Home";
 
@@ -93,6 +95,7 @@ const routes: Array<Route> = [
   },
   {
     title: "Покупці",
+    component: Customer,
     path: "/customer",
     icon: DashboardIcon,
     sidebar: true,
@@ -108,6 +111,7 @@ const routes: Array<Route> = [
   },
   {
     title: "Продукція",
+    component: Item,
     path: "/item",
     icon: DashboardIcon,
     sidebar: true,

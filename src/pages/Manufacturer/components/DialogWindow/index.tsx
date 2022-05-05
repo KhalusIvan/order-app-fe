@@ -52,8 +52,8 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
           currency: item?.currency || null,
         }}
         validationSchema={Yup.object().shape({
-          name: Yup.string().required(""),
-          currency: Yup.object().required(""),
+          name: Yup.string().required("Обов'язкове поле!"),
+          currency: Yup.object().required("Обов'язкове поле!"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           if (item) {
