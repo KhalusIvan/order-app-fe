@@ -1,16 +1,3 @@
-import {
-  Home as HomeIcon,
-  BarChartOutlined as DashboardIcon,
-  CodeOutlined as CodeIcon,
-  GitHub as GitHubIcon,
-  Public as PublicIcon,
-  PublicOff as PrivateIcon,
-  AccountBoxRounded as UserIcon,
-  SettingsOutlined as SettingsIcon,
-  ListAlt as ListIcon,
-  CreditCard as BillingIcon,
-} from "@mui/icons-material";
-
 import Order from "../static/icons/order.png";
 import Monitor from "../static/icons/monitor.png";
 import Buyer from "../static/icons/buyer.png";

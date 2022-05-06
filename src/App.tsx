@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Loader } from "./components/Loader";
 import { Alerts } from "./components/Alerts";
-import { AddRoute } from "./config/AddRoute";
+import { AddRoute } from "./routes/AddRoute";
 
-import { routes } from "./config";
+import { routes } from "./routes";
 import { Route as AppRoute } from "./types";
 import { getAppTheme } from "./styles/theme";
 import { LIGHT_MODE_THEME } from "./utils/constants";

@@ -4,7 +4,7 @@ import { List, Divider, Collapse } from "@mui/material";
 import { RouteItem } from "./RouteItem";
 import { SignOutRoute } from "./SignOutRoute";
 
-import { routes } from "../../../config";
+import { routes } from "../../../routes";
 import { Route } from "../../../types";
 
 export const Routes = () => {

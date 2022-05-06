@@ -19,10 +19,10 @@ export const SignOutRoute = () => {
     <StyledListItemButton onClick={handleSignOutClick}>
       <ListItemIcon>
         <IconButton size="small">
-          <ExitToApp />
+          <ExitToApp fontSize={"large"} />
         </IconButton>
       </ListItemIcon>
-      <ListItemText primary="Sign Out" />
+      <ListItemText primary="Вийти" />
     </StyledListItemButton>
   );
 };

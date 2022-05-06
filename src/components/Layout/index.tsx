@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { styled, Box } from "@mui/material";
 
 import { Navigation } from "../Navigation";
