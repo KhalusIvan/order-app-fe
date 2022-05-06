@@ -10,6 +10,7 @@ import {
   Pagination,
 } from "@mui/material";
 import { useHistory, useLocation } from "react-router-dom";
+import NoData from "../../../static/icons/cloud-computing.png";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -38,7 +39,6 @@ export const TableComponent = ({
   const params = new URLSearchParams(useLocation().search);
   const history = useHistory();
   const page = params.has("page") ? Number(params.get("page")) : 1;
-
   return (
     <TableContainer sx={{ width: width || "100%" }} component={Paper}>
       <Table aria-label="customized table">
@@ -80,6 +80,30 @@ export const TableComponent = ({
           ))}
         </TableBody>
       </Table>
+      {rows.length === 0 && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "100px 0",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img src={NoData} alt="noData" style={{ width: 100 }} />
+            <div style={{ fontSize: 20, fontWeight: 600 }}>
+              Нічого не знайдено
+            </div>
+          </div>
+        </div>
+      )}
       <Pagination
         sx={{
           width: width || "100%",

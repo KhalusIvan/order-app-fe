@@ -1,4 +1,8 @@
-import { getWorkspaceByIdSelector } from "../../../../redux/selector/workspaceSelector";
+import {
+  getEmployeeByIdSelector,
+  getEmployeeRoleListSelector,
+  getEmployeeUserListSelector,
+} from "../../../../redux/selector/employeeSelector";
 import { useSelector } from "react-redux";
 import {
   Dialog,
@@ -8,11 +12,11 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
-import { CustomTextField } from "../../../../components/Inputs/CustomTextField";
+import { CustomAutocomplete } from "../../../../components/Inputs/CustomAutocomplete";
 import {
-  createWorkspace,
-  updateWorkspace,
-} from "../../../../redux/operation/workspaceOperation";
+  createEmployee,
+  updateEmployee,
+} from "../../../../redux/operation/employeeOperation";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
@@ -27,8 +31,9 @@ interface DialogProps {
 }
 
 export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
-  const item = useSelector(getWorkspaceByIdSelector(dialog.id));
-  console.log(item);
+  const item = useSelector(getEmployeeByIdSelector(dialog.id));
+  const roles = useSelector(getEmployeeRoleListSelector);
+  const users = useSelector(getEmployeeUserListSelector);
   const dispatch = useDispatch();
   const params = new URLSearchParams(useLocation().search);
 
@@ -40,22 +45,25 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
       fullWidth
     >
       <DialogTitle id="alert-dialog-title">
-        {dialog.id ? "Редагування простору" : "Створення простору"}
+        {dialog.id ? "Редагування прицівника" : "Додавання працівника"}
       </DialogTitle>
       <Formik
         initialValues={{
-          name: item?.workspace?.name || "",
+          user: item?.user || null,
+          role: item?.role || null,
         }}
         validationSchema={Yup.object().shape({
-          name: Yup.string().required("Обов'язкове поле!"),
+          user: Yup.object().required("Обов'язкове поле!"),
+          role: Yup.object().required("Обов'язкове поле!"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           if (item) {
             dispatch(
-              updateWorkspace(
-                item.workspace.id,
+              updateEmployee(
+                item.id,
                 {
-                  name: values.name,
+                  userId: values.user.id,
+                  roleId: values.role.id,
                 },
                 params,
                 setSubmitting,
@@ -64,9 +72,10 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             );
           } else {
             dispatch(
-              createWorkspace(
+              createEmployee(
                 {
-                  name: values.name,
+                  userId: values.user.id,
+                  roleId: values.role.id,
                 },
                 params,
                 setSubmitting,
@@ -88,15 +97,28 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
         }) => (
           <form style={{ height: "100%" }} onSubmit={handleSubmit}>
             <DialogContent>
-              <CustomTextField
-                label="Назва"
-                placeholder="Введіть назву"
-                value={values.name}
-                name="name"
+              <CustomAutocomplete
+                label="Працівник"
+                placeholder="Виберіть працівника"
+                name="user"
+                value={values.user}
+                error={Boolean(touched.user && errors.user)}
+                loading={false}
+                options={users}
+                disabled={!!item}
+                setFieldValue={setFieldValue}
                 onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(touched.name && errors.name)}
-                helperText={(touched.name && errors.name)?.toString() || ""}
+              />
+              <CustomAutocomplete
+                label="Роль"
+                placeholder="Виберіть роль"
+                name="role"
+                value={values.role}
+                error={Boolean(touched.role && errors.role)}
+                loading={false}
+                options={roles}
+                setFieldValue={setFieldValue}
+                onBlur={handleBlur}
               />
             </DialogContent>
             <DialogActions>

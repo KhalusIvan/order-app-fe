@@ -5,6 +5,7 @@ import alertReducer from "./duck/alertDuck";
 import userReducer from "./duck/userDuck";
 import loaderReducer from "./duck/loaderDuck";
 import manufacturerReducer from "./duck/manufacturerDuck";
+import employeeReducer from "./duck/employeeDuck";
 import itemReducer from "./duck/itemDuck";
 import customerReducer from "./duck/customerDuck";
 import workspaceReducer from "./duck/workspaceDuck";
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   userReducer,
   loaderReducer,
   manufacturerReducer,
+  employeeReducer,
   itemReducer,
   customerReducer,
   workspaceReducer,

@@ -17,14 +17,16 @@ export const CustomAutocomplete = ({
   options,
   setFieldValue,
   onBlur,
+  disabled = false,
 }: {
   label: string;
   placeholder: string;
   name: string;
   value: { id: number; name: string } | null;
   error: boolean;
+  disabled?: boolean;
   loading: boolean;
-  options: readonly { id: number; name: string }[];
+  options: readonly { id: number; name: string; email?: string }[];
   setFieldValue: (field: string, value: any) => void;
   onBlur: React.FocusEventHandler<HTMLInputElement>;
 }) => {
@@ -38,12 +40,19 @@ export const CustomAutocomplete = ({
             option: { id: number; name: string },
             value: { id: number; name: string }
           ) => option.id === value.id}
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option: {
+            id: number;
+            name: string;
+            email?: string;
+          }) =>
+            option.email ? `${option.name} (${option.email})` : option.name
+          }
           options={options}
           loading={loading}
           onChange={(event, newValue) => {
             setFieldValue(name, newValue);
           }}
+          disabled={disabled}
           value={value}
           renderInput={(params) => (
             <TextFieldWrapper

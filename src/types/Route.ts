@@ -4,7 +4,7 @@ export type Route = {
   title: string;
   path?: string;
   component?: FC<{}>;
-  icon?: ComponentType;
+  icon?: string;
   subRoutes?: Route[];
   appendDivider?: boolean;
   expanded?: boolean;

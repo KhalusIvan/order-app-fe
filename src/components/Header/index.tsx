@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AppBar, Box, Toolbar } from "@mui/material";
 
 import { AppTitle } from "./AppTitle";
-import { More, /*Notifications,*/ UserAccount } from "../Actions";
+import { More, UserAccount } from "../Actions";
 import { DefaultMenu, MobileMenu } from "./Menu";
 
 export const Header = () => {
@@ -35,7 +35,6 @@ export const Header = () => {
           <Box
             sx={{ display: { xs: "none", md: "flex", alignItems: "center" } }}
           >
-            {/*<Notifications total={20} />*/}
             <UserAccount onClick={handleProfileMenuOpen} />
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

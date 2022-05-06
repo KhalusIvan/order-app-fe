@@ -5,7 +5,16 @@ enum actions {
   LOADER_REMOVE = "LOADER_REMOVE",
 }
 
-const initialState: Loader = { check: 0, manufacturer: 0 };
+const initialState: Loader = {
+  check: 0,
+  manufacturer: 0,
+  item: 0,
+  employee: 0,
+  customer: 0,
+  currency: 0,
+  workspace: 0,
+  role: 0,
+};
 
 export function loaderAddAction(field: string) {
   const action: CustomAction = {

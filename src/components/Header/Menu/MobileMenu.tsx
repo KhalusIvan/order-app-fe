@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Menu, MenuItem } from "@mui/material";
 
-import { Notifications, SignOut, Settings } from "../../Actions";
+import { SignOut, Settings } from "../../Actions";
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -33,10 +33,6 @@ export const MobileMenu = ({
       onClose={handleMenuClose}
     >
       <Box sx={{ textAlign: "center" }}>
-        <MenuItem onClick={handleMenuClose}>
-          <Notifications total={20} disableTooltip />
-          Notifications
-        </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <Settings disableTooltip />
           Settings

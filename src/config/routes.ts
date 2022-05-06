@@ -11,6 +11,14 @@ import {
   CreditCard as BillingIcon,
 } from "@mui/icons-material";
 
+import Order from "../static/icons/order.png";
+import Monitor from "../static/icons/monitor.png";
+import Buyer from "../static/icons/buyer.png";
+import Factory from "../static/icons/factory.png";
+import Boxes from "../static/icons/boxes.png";
+import EmployeeImage from "../static/icons/employee.png";
+import Coworking from "../static/icons/coworking.png";
+
 import { SignIn } from "../pages/auth/SignIn";
 import { SignUp } from "../pages/auth/SignUp";
 import { ResetPassword } from "../pages/auth/ResetPassword";
@@ -18,6 +26,7 @@ import { ConfirmAccount } from "../pages/auth/ConfirmAccount";
 import { ConfirmPassword } from "../pages/auth/ConfirmPassword";
 
 import { Manufacturer } from "../pages/Manufacturer/Manufacturer";
+import { Employee } from "../pages/Employee/Employee";
 import { Item } from "../pages/Item/Item";
 import { Customer } from "../pages/Customer/Customer";
 import { Workspace } from "../pages/Workspace/Workspace";
@@ -31,7 +40,7 @@ const routes: Array<Route> = [
     title: "Welcome",
     component: Home,
     path: "/",
-    icon: HomeIcon,
+    icon: Order,
     sidebar: false,
     authentificated: false,
   },
@@ -82,14 +91,14 @@ const routes: Array<Route> = [
   {
     title: "Панель",
     path: "/dashboard",
-    icon: DashboardIcon,
+    icon: Monitor,
     sidebar: true,
     authentificated: true,
   },
   {
     title: "Замовлення",
     path: "/order",
-    icon: DashboardIcon,
+    icon: Order,
     sidebar: true,
     authentificated: true,
   },
@@ -97,7 +106,7 @@ const routes: Array<Route> = [
     title: "Покупці",
     component: Customer,
     path: "/customer",
-    icon: DashboardIcon,
+    icon: Buyer,
     sidebar: true,
     authentificated: true,
   },
@@ -105,7 +114,7 @@ const routes: Array<Route> = [
     title: "Виробники",
     component: Manufacturer,
     path: "/manufacturer",
-    icon: DashboardIcon,
+    icon: Factory,
     sidebar: true,
     authentificated: true,
   },
@@ -113,14 +122,15 @@ const routes: Array<Route> = [
     title: "Продукція",
     component: Item,
     path: "/item",
-    icon: DashboardIcon,
+    icon: Boxes,
     sidebar: true,
     authentificated: true,
   },
   {
     title: "Штат",
+    component: Employee,
     path: "/employee",
-    icon: DashboardIcon,
+    icon: EmployeeImage,
     sidebar: true,
     authentificated: true,
   },
@@ -128,7 +138,7 @@ const routes: Array<Route> = [
     title: "Простір",
     component: Workspace,
     path: "/workspace",
-    icon: DashboardIcon,
+    icon: Coworking,
     sidebar: true,
     authentificated: true,
   },

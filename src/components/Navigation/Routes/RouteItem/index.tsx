@@ -49,9 +49,10 @@ export const RouteItem = ({
           isSelected={location.pathname === route.path}
         >
           {route.icon && (
-            <StyledIcon
-              component={route.icon}
-              isSelected={isSelected || false}
+            <img
+              src={route.icon}
+              alt="icon"
+              style={{ width: 40, padding: 5 }}
             />
           )}
         </StyledIconButton>
@@ -85,11 +86,3 @@ const StyledIconButton = styled(IconButton)<{ isSelected: boolean }>(
     transition: "box-shadow 0.1s",
   })
 );
-
-const StyledIcon = styled(Icon)<{
-  isSelected: boolean;
-  component: ComponentType<{}>;
-}>`
-  ${({ isSelected, theme }) =>
-    isSelected && `color: ${theme.palette.primary.main};`}
-`;

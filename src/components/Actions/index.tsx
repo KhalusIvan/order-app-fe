@@ -1,9 +1,7 @@
 import React from "react";
 import {
   MoreVert as MoreIcon,
-  Mail as MailIcon,
-  Notifications as NotificationsIcon,
-  Fingerprint as FingerprintIcon,
+  AccountCircle,
   Logout as LogoutIcon,
   Settings as SettingsIcon,
   List as PreferencesIcon,
@@ -26,27 +24,13 @@ export const More = ({ onClick, disableTooltip = false }: ActionProps) => (
   />
 );
 
-export const Notifications = ({
-  total,
-  onClick,
-  disableTooltip = false,
-}: ActionProps) => (
-  <ActionItem
-    title="Notifications"
-    icon={NotificationsIcon}
-    onClick={onClick}
-    badgeContent={total}
-    disableTooltip={disableTooltip}
-  />
-);
-
 export const UserAccount = ({
   onClick,
   disableTooltip = false,
 }: ActionProps) => (
   <ActionItem
     title="My Account"
-    icon={FingerprintIcon}
+    icon={AccountCircle}
     onClick={onClick}
     disableTooltip={disableTooltip}
   />

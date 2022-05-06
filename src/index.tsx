@@ -7,7 +7,6 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
-import { APP_TITLE, APP_DESCRIPTION } from "./utils/constants";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 
@@ -16,7 +15,7 @@ ReactDOM.render(
     <HelmetProvider>
       <Helmet titleTemplate="%s | LedgerCoin" defaultTitle="LedgerCoin" />
       <Helmet>
-        <meta name="description" content={APP_DESCRIPTION} />
+        <meta name="description" content="LedgerCoin" />
         <link
           rel="stylesheet"
           //href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
