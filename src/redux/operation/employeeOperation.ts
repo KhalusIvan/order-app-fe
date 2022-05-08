@@ -48,9 +48,14 @@ export const getEmployees =
     }
   };
 
+interface postRequest {
+  userId: number;
+  roleId: number;
+}
+
 export const createEmployee =
   (
-    json: { userId: number; roleId: number },
+    json: postRequest,
     params: URLSearchParams,
     setSubmitting: (arg0: boolean) => void,
     handleCloseDialog: () => void
@@ -73,7 +78,7 @@ export const createEmployee =
 export const updateEmployee =
   (
     id: number,
-    json: { userId: number; roleId: number },
+    json: postRequest,
     params: URLSearchParams,
     setSubmitting: (arg0: boolean) => void,
     handleCloseDialog: () => void

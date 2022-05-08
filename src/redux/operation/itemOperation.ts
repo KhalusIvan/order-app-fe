@@ -41,15 +41,17 @@ export const getItems =
     }
   };
 
+interface postRequest {
+  name: string;
+  code: string;
+  manufacturerId: number;
+  buyPrice: number;
+  recomendedSellPrice: number;
+}
+
 export const createItem =
   (
-    json: {
-      name: string;
-      code: string;
-      manufacturerId: number;
-      buyPrice: number;
-      recomendedSellPrice: number;
-    },
+    json: postRequest,
     params: URLSearchParams,
     setSubmitting: (arg0: boolean) => void,
     handleCloseDialog: () => void
@@ -72,13 +74,7 @@ export const createItem =
 export const updateItem =
   (
     id: number,
-    json: {
-      name: string;
-      code: string;
-      manufacturerId: number;
-      buyPrice: number;
-      recomendedSellPrice: number;
-    },
+    json: postRequest,
     params: URLSearchParams,
     setSubmitting: (arg0: boolean) => void,
     handleCloseDialog: () => void
@@ -129,12 +125,7 @@ export const getItemManufacturers =
       dispatch(
         getItemManufacturersAction({
           ...response.data,
-          manufacturerList: response.data.map(
-            (el: { id: number; name: string }) => ({
-              id: el.id,
-              name: el.name,
-            })
-          ),
+          manufacturerList: response.data,
         })
       );
     } catch (err) {

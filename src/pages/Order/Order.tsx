@@ -7,11 +7,15 @@ import { TableComponent } from "../../components/DefaultTable/TableComponent";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getItems,
-  getItemManufacturers,
-  deleteItem,
-} from "../../redux/operation/itemOperation";
-import { getItemsSelector } from "../../redux/selector/itemSelector";
+  getOrders,
+  deleteOrder,
+  getOrderPayments,
+  getOrderCustomers,
+  getOrderStatuses,
+  getOrderCurrencies,
+  getOrderItems,
+} from "../../redux/operation/orderOperation";
+import { getOrdersSelector } from "../../redux/selector/orderSelector";
 import { getLoaderSelector } from "../../redux/selector/loaderSelector";
 import { Search } from "../../components/DefaultTable/Search";
 import { Multiselect } from "../../components/DefaultTable/Multiselect";
@@ -21,10 +25,20 @@ import { DialogWindow } from "./components/DialogWindow";
 import columns from "./components/columns";
 import { useLocation } from "react-router-dom";
 
-export const Item = () => {
+const getDate = (inputDate: string) => {
+  const date = new Date();
+
+  const yyyy = date.getFullYear();
+  let mm = date.getMonth() + 1; // Months start at 0!
+  let dd = date.getDate();
+
+  return `${dd < 10 ? "0" + dd : dd}.${mm < 10 ? "0" + mm : mm}.${yyyy}`;
+};
+
+export const Order = () => {
   const dispatch = useDispatch();
-  const data = useSelector(getItemsSelector);
-  const isLoading = useSelector(getLoaderSelector("item"));
+  const data = useSelector(getOrdersSelector);
+  const isLoading = useSelector(getLoaderSelector("order"));
   const params = new URLSearchParams(useLocation().search);
   const [isFirst, setIsFirst] = useState<boolean>(true);
   const [dialog, setDialog] = useState<{ open: boolean; id: number | null }>({
@@ -39,7 +53,11 @@ export const Item = () => {
   };
 
   useEffect(() => {
-    dispatch(getItemManufacturers());
+    dispatch(getOrderPayments());
+    dispatch(getOrderItems());
+    dispatch(getOrderCustomers());
+    dispatch(getOrderCurrencies());
+    dispatch(getOrderStatuses());
   }, []);
 
   useEffect(() => {
@@ -48,30 +66,36 @@ export const Item = () => {
       params.append("filter", "true");
       setIsFirst(false);
     }
-    dispatch(getItems(params.toString().replaceAll("%2C", ",")));
+    dispatch(getOrders(params.toString().replaceAll("%2C", ",")));
   }, [params.toString()]);
 
   return (
     <>
-      <Helmet title="Item" />
+      <Helmet title="Order" />
       <Grid container justifyContent="space-between" alignItems="center">
-        <PageTitle title={"Продукція"} />
+        <PageTitle title={"Замовлення"} />
         <Button
           color="primary"
           variant="contained"
           onClick={() => handleOpenDialog(null)}
         >
-          Додати продукцію
+          Додати замовлення
         </Button>
       </Grid>
       <Divider sx={{ my: 1 }} />
       <Grid container sx={{ my: 3 }}>
         <Search />
         <Multiselect
-          label="Виробники"
-          data={data?.manufacturer || []}
+          label="Статус"
+          data={data?.status || []}
           loading={isLoading}
-          urlName="manufacturerId"
+          urlName="statusId"
+        />
+        <Multiselect
+          label="Спосіб оплати"
+          data={data?.payment || []}
+          loading={isLoading}
+          urlName="paymentId"
         />
       </Grid>
       <Grid item xs={12}>
@@ -89,19 +113,24 @@ export const Item = () => {
             })}
             rows={data.rows.map((el) => ({
               ...el,
-              manufacturer: el.manufacturer.name,
-              recomendedSellPrice: `${el.recomendedSellPrice} ${el.manufacturer.currency.code}`,
-              buyPrice: `${el.buyPrice} ${el.manufacturer.currency.code}`,
+              number: el.id,
+              date: getDate(el.createdAt),
+              customer: `${el.customer.firstName} ${el.customer.lastName}`,
+              user: `${el.user.firstName} ${el.user.lastName}`,
+              city: el.customer.city,
+              postOffice: el.customer.postOffice,
+              payment: el.payment.name,
+              status: el.status.name,
               delete: (
                 <IconButton
                   size="small"
-                  onClick={() => dispatch(deleteItem(el.id, params))}
+                  onClick={() => dispatch(deleteOrder(el.id, params))}
                 >
                   <DeleteIcon />
                 </IconButton>
               ),
             }))}
-            width={900}
+            width={950}
             pages={data.pages || 1}
           />
         )}

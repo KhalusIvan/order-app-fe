@@ -50,13 +50,12 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
           name: Yup.string().required("Обов'язкове поле!"),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const obj = { name: values.name };
           if (item) {
             dispatch(
               updateWorkspace(
                 item.workspace.id,
-                {
-                  name: values.name,
-                },
+                obj,
                 params,
                 setSubmitting,
                 handleCloseDialog
@@ -64,14 +63,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             );
           } else {
             dispatch(
-              createWorkspace(
-                {
-                  name: values.name,
-                },
-                params,
-                setSubmitting,
-                handleCloseDialog
-              )
+              createWorkspace(obj, params, setSubmitting, handleCloseDialog)
             );
           }
         }}

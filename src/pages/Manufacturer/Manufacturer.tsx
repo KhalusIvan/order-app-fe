@@ -90,6 +90,7 @@ export const Manufacturer = () => {
             rows={data.rows.map((el) => ({
               ...el,
               currency: `${el.currency.name} (${el.currency.code})`,
+              percent: `${el.percent}%`,
               delete: (
                 <IconButton
                   size="small"

@@ -65,37 +65,19 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             .required("Обов'язкове поле!"),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const obj = {
+            name: values.name,
+            code: values.code,
+            buyPrice: +values.buyPrice,
+            recomendedSellPrice: +values.recomendedSellPrice,
+            manufacturerId: values.manufacturer?.id,
+          };
           if (item) {
             dispatch(
-              updateItem(
-                item.id,
-                {
-                  name: values.name,
-                  code: values.code,
-                  buyPrice: +values.buyPrice,
-                  recomendedSellPrice: +values.recomendedSellPrice,
-                  manufacturerId: values.manufacturer?.id,
-                },
-                params,
-                setSubmitting,
-                handleCloseDialog
-              )
+              updateItem(item.id, obj, params, setSubmitting, handleCloseDialog)
             );
           } else {
-            dispatch(
-              createItem(
-                {
-                  name: values.name,
-                  code: values.code,
-                  buyPrice: +values.buyPrice,
-                  recomendedSellPrice: +values.recomendedSellPrice,
-                  manufacturerId: values.manufacturer?.id,
-                },
-                params,
-                setSubmitting,
-                handleCloseDialog
-              )
-            );
+            dispatch(createItem(obj, params, setSubmitting, handleCloseDialog));
           }
         }}
       >
@@ -157,7 +139,19 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                     name="buyPrice"
                     type="number"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                      if (values.manufacturer && e.target.value) {
+                        console.log(values.manufacturer, e.target.value);
+                        const percent =
+                          (+e.target.value / 100) * values.manufacturer.percent;
+                        console.log(percent);
+                        setFieldValue(
+                          "recomendedSellPrice",
+                          (+e.target.value + percent).toFixed(2)
+                        );
+                      }
+                    }}
                     error={Boolean(touched.buyPrice && errors.buyPrice)}
                     helperText={
                       (touched.buyPrice && errors.buyPrice)?.toString() || ""

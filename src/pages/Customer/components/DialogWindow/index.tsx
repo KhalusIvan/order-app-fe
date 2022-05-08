@@ -55,22 +55,26 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
           firstName: Yup.string().required("Обов'язкове поле!"),
           lastName: Yup.string().required("Обов'язкове поле!"),
           city: Yup.string().required("Обов'язкове поле!"),
-          telephone: Yup.string().required("Обов'язкове поле!"),
+          telephone: Yup.string()
+            .min(13, "Некоректний телефон!")
+            .max(13, "Некоректний телефон!")
+            .required("Обов'язкове поле!"),
           postOffice: Yup.number().required("Обов'язкове поле!"),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const obj = {
+            firstName: values?.firstName,
+            lastName: values?.lastName,
+            middleName: values?.middleName || null,
+            postOffice: values?.postOffice,
+            city: values?.city,
+            telephone: values?.telephone,
+          };
           if (customer) {
             dispatch(
               updateCustomer(
                 customer.id,
-                {
-                  firstName: values?.firstName,
-                  lastName: values?.lastName,
-                  middleName: values?.middleName || null,
-                  postOffice: values?.postOffice,
-                  city: values?.city,
-                  telephone: values?.telephone,
-                },
+                obj,
                 params,
                 setSubmitting,
                 handleCloseDialog
@@ -78,19 +82,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             );
           } else {
             dispatch(
-              createCustomer(
-                {
-                  firstName: values?.firstName,
-                  lastName: values?.lastName,
-                  middleName: values?.middleName || null,
-                  postOffice: values?.postOffice,
-                  city: values?.city,
-                  telephone: values?.telephone,
-                },
-                params,
-                setSubmitting,
-                handleCloseDialog
-              )
+              createCustomer(obj, params, setSubmitting, handleCloseDialog)
             );
           }
         }}
@@ -103,6 +95,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
           handleChange,
           values,
           touched,
+          setFieldValue,
         }) => (
           <form style={{ height: "100%" }} onSubmit={handleSubmit}>
             <DialogContent>
@@ -157,7 +150,16 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                     value={values.telephone}
                     name="telephone"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === "+38") {
+                        setFieldValue("telephone", "");
+                      } else if (value.length === 1) {
+                        setFieldValue("telephone", `+38${value}`);
+                      } else {
+                        setFieldValue("telephone", value);
+                      }
+                    }}
                     error={Boolean(touched.telephone && errors.telephone)}
                     helperText={
                       (touched.telephone && errors.telephone)?.toString() || ""

@@ -1,4 +1,4 @@
-import Order from "../static/icons/order.png";
+import OrderIcon from "../static/icons/order.png";
 import Monitor from "../static/icons/monitor.png";
 import Buyer from "../static/icons/buyer.png";
 import Factory from "../static/icons/factory.png";
@@ -15,6 +15,7 @@ import { ConfirmPassword } from "../pages/auth/ConfirmPassword";
 import { Manufacturer } from "../pages/Manufacturer/Manufacturer";
 import { Employee } from "../pages/Employee/Employee";
 import { Item } from "../pages/Item/Item";
+import { Order } from "../pages/Order/Order";
 import { Customer } from "../pages/Customer/Customer";
 import { Workspace } from "../pages/Workspace/Workspace";
 import { Home } from "../pages/Home";
@@ -27,7 +28,7 @@ const routes: Array<Route> = [
     title: "Welcome",
     component: Home,
     path: "/",
-    icon: Order,
+    icon: OrderIcon,
     sidebar: false,
     authentificated: false,
   },
@@ -84,8 +85,9 @@ const routes: Array<Route> = [
   },
   {
     title: "Замовлення",
+    component: Order,
     path: "/order",
-    icon: Order,
+    icon: OrderIcon,
     sidebar: true,
     authentificated: true,
   },

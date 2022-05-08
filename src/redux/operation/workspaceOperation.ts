@@ -30,9 +30,13 @@ export const getWorkspaces =
     }
   };
 
+interface postRequest {
+  name: string;
+}
+
 export const createWorkspace =
   (
-    json: { name: string },
+    json: postRequest,
     params: URLSearchParams,
     setSubmitting: (arg0: boolean) => void,
     handleCloseDialog: () => void
@@ -54,7 +58,7 @@ export const createWorkspace =
 export const updateWorkspace =
   (
     id: number,
-    json: { name: string },
+    json: postRequest,
     params: URLSearchParams,
     setSubmitting: (arg0: boolean) => void,
     handleCloseDialog: () => void

@@ -7,6 +7,7 @@ import loaderReducer from "./duck/loaderDuck";
 import manufacturerReducer from "./duck/manufacturerDuck";
 import employeeReducer from "./duck/employeeDuck";
 import itemReducer from "./duck/itemDuck";
+import orderReducer from "./duck/orderDuck";
 import customerReducer from "./duck/customerDuck";
 import workspaceReducer from "./duck/workspaceDuck";
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   manufacturerReducer,
   employeeReducer,
   itemReducer,
+  orderReducer,
   customerReducer,
   workspaceReducer,
 });

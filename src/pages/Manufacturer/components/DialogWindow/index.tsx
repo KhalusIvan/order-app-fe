@@ -50,20 +50,24 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
         initialValues={{
           name: item?.name || "",
           currency: item?.currency || null,
+          percent: item?.percent || null,
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().required("Обов'язкове поле!"),
+          percent: Yup.string().required("Обов'язкове поле!"),
           currency: Yup.object().required("Обов'язкове поле!"),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const obj = {
+            name: values.name,
+            percent: values.percent,
+            currencyId: values.currency?.id,
+          };
           if (item) {
             dispatch(
               updateManufacturer(
                 item.id,
-                {
-                  name: values.name,
-                  currencyId: values.currency?.id,
-                },
+                obj,
                 params,
                 setSubmitting,
                 handleCloseDialog
@@ -71,15 +75,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             );
           } else {
             dispatch(
-              createManufacturer(
-                {
-                  name: values.name,
-                  currencyId: values.currency?.id,
-                },
-                params,
-                setSubmitting,
-                handleCloseDialog
-              )
+              createManufacturer(obj, params, setSubmitting, handleCloseDialog)
             );
           }
         }}
@@ -116,6 +112,18 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                 options={currencies}
                 setFieldValue={setFieldValue}
                 onBlur={handleBlur}
+              />
+              <CustomTextField
+                label="Маржа (%)"
+                placeholder="Введіть маржу (%)"
+                value={values.percent}
+                name="percent"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={Boolean(touched.percent && errors.percent)}
+                helperText={
+                  (touched.percent && errors.percent)?.toString() || ""
+                }
               />
             </DialogContent>
             <DialogActions>

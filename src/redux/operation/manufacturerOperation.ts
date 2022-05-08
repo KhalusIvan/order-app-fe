@@ -47,9 +47,15 @@ export const getManufacturers =
     }
   };
 
+interface postRequest {
+  name: string;
+  currencyId: number;
+  percent: number;
+}
+
 export const createManufacturer =
   (
-    json: { name: string; currencyId: number },
+    json: postRequest,
     params: URLSearchParams,
     setSubmitting: (arg0: boolean) => void,
     handleCloseDialog: () => void
@@ -72,7 +78,7 @@ export const createManufacturer =
 export const updateManufacturer =
   (
     id: number,
-    json: { name: string; currencyId: number },
+    json: postRequest,
     params: URLSearchParams,
     setSubmitting: (arg0: boolean) => void,
     handleCloseDialog: () => void

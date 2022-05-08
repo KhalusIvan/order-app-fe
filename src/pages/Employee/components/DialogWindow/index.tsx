@@ -57,14 +57,15 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
           role: Yup.object().required("Обов'язкове поле!"),
         })}
         onSubmit={(values, { setSubmitting }) => {
+          const obj = {
+            userId: values.user.id,
+            roleId: values.role.id,
+          };
           if (item) {
             dispatch(
               updateEmployee(
                 item.id,
-                {
-                  userId: values.user.id,
-                  roleId: values.role.id,
-                },
+                obj,
                 params,
                 setSubmitting,
                 handleCloseDialog
@@ -72,15 +73,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             );
           } else {
             dispatch(
-              createEmployee(
-                {
-                  userId: values.user.id,
-                  roleId: values.role.id,
-                },
-                params,
-                setSubmitting,
-                handleCloseDialog
-              )
+              createEmployee(obj, params, setSubmitting, handleCloseDialog)
             );
           }
         }}
