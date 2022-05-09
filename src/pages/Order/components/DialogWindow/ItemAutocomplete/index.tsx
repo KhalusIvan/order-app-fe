@@ -30,7 +30,6 @@ export const ItemAutocomplete = ({
   setFieldValue: (field: string, value: any) => void;
   onBlur: React.FocusEventHandler<HTMLInputElement>;
 }) => {
-  console.log(options);
   return (
     <>
       <Box sx={{ py: 1 }}>

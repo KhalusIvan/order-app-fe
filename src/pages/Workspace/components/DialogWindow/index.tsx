@@ -28,7 +28,6 @@ interface DialogProps {
 
 export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
   const item = useSelector(getWorkspaceByIdSelector(dialog.id));
-  console.log(item);
   const dispatch = useDispatch();
   const params = new URLSearchParams(useLocation().search);
 

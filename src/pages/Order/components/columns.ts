@@ -7,7 +7,7 @@ const columns: Array<{ id: number; title: string; object: string }> = [
   { id: 6, title: "Дата", object: "date" },
   { id: 7, title: "Спосіб оплати", object: "payment" },
   { id: 8, title: "Статус", object: "status" },
-  { id: 9, title: "Видалити", object: "delete" },
+  { id: 9, title: "Дії", object: "delete" },
 ];
 
 export default columns;

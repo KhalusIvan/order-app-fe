@@ -113,6 +113,29 @@ export const updateOrder =
     }
   };
 
+export const finishOrder =
+  (
+    id: number,
+    json: { order: { buyPrice: number; id: number }[] },
+    params: URLSearchParams,
+    setSubmitting: (arg0: boolean) => void,
+    handleCloseDialog: () => void
+  ): ThunkAction<void, RootState, null, Action<string>> =>
+  async (dispatch, getState) => {
+    const axios = getAxiosInstance(dispatch);
+    try {
+      await axios.post(`api/order/${id}/finish`, json, setBearerToken());
+      if (!params.has("page")) {
+        params.append("page", "1");
+      }
+      params.append("filter", "true");
+      handleCloseDialog();
+      dispatch(getOrders(params.toString()));
+    } catch (err) {
+      setSubmitting(false);
+    }
+  };
+
 export const deleteOrder =
   (
     id: number,

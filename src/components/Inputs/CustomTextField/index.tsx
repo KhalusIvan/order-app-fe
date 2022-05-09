@@ -8,6 +8,7 @@ export const CustomTextField = ({
   name,
   onBlur,
   onChange,
+  disabled = false,
   error,
   helperText,
   type = "text",
@@ -21,6 +22,7 @@ export const CustomTextField = ({
   error: boolean;
   helperText: string;
   type?: string;
+  disabled?: boolean;
 }) => {
   return (
     <>
@@ -32,6 +34,7 @@ export const CustomTextField = ({
           value={value}
           name={name}
           type={type}
+          disabled={disabled}
           onBlur={onBlur}
           onChange={onChange}
           error={error}

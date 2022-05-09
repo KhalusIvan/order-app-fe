@@ -21,12 +21,13 @@ import { Search } from "../../components/DefaultTable/Search";
 import { Multiselect } from "../../components/DefaultTable/Multiselect";
 import { Loader } from "../../components/Loader";
 import { DialogWindow } from "./components/DialogWindow";
-
+import { DialogWindowFinish } from "./components/DialogWindowFinish";
+import DoneIcon from "@mui/icons-material/Done";
 import columns from "./components/columns";
 import { useLocation } from "react-router-dom";
 
 const getDate = (inputDate: string) => {
-  const date = new Date();
+  const date = new Date(inputDate);
 
   const yyyy = date.getFullYear();
   let mm = date.getMonth() + 1; // Months start at 0!
@@ -50,6 +51,20 @@ export const Order = () => {
   };
   const handleCloseDialog = () => {
     setDialog({ open: false, id: dialog.id });
+  };
+
+  const [doneDialog, setDoneDialog] = useState<{
+    open: boolean;
+    id: number | null;
+  }>({
+    open: false,
+    id: null,
+  });
+  const handleOpenDoneDialog = (id: number | null) => {
+    setDoneDialog({ open: true, id });
+  };
+  const handleCloseDoneDialog = () => {
+    setDoneDialog({ open: false, id: dialog.id });
   };
 
   useEffect(() => {
@@ -115,19 +130,29 @@ export const Order = () => {
               ...el,
               number: el.id,
               date: getDate(el.createdAt),
-              customer: `${el.customer.firstName} ${el.customer.lastName}`,
+              customer: `${el.firstName} ${el.lastName}`,
               user: `${el.user.firstName} ${el.user.lastName}`,
-              city: el.customer.city,
-              postOffice: el.customer.postOffice,
+              city: el.city,
+              postOffice: el.postOffice,
               payment: el.payment.name,
               status: el.status.name,
               delete: (
-                <IconButton
-                  size="small"
-                  onClick={() => dispatch(deleteOrder(el.id, params))}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  {!el.status.finish && (
+                    <IconButton
+                      size="small"
+                      onClick={() => handleOpenDoneDialog(el.id)}
+                    >
+                      <DoneIcon />
+                    </IconButton>
+                  )}
+                  <IconButton
+                    size="small"
+                    onClick={() => dispatch(deleteOrder(el.id, params))}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </div>
               ),
             }))}
             width={950}
@@ -136,6 +161,10 @@ export const Order = () => {
         )}
       </Grid>
       <DialogWindow dialog={dialog} handleCloseDialog={handleCloseDialog} />
+      <DialogWindowFinish
+        dialog={doneDialog}
+        handleCloseDialog={handleCloseDoneDialog}
+      />
     </>
   );
 };

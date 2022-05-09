@@ -142,10 +142,8 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                     onChange={(e) => {
                       handleChange(e);
                       if (values.manufacturer && e.target.value) {
-                        console.log(values.manufacturer, e.target.value);
                         const percent =
                           (+e.target.value / 100) * values.manufacturer.percent;
-                        console.log(percent);
                         setFieldValue(
                           "recomendedSellPrice",
                           (+e.target.value + percent).toFixed(2)
