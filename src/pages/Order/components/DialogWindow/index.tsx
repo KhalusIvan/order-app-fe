@@ -45,7 +45,7 @@ interface DialogProps {
 }
 
 interface Order {
-  id?: number;
+  id: number | string;
   item: Item;
   sellPrice: number;
   amount: number;
@@ -97,6 +97,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
           currencies: currenciesList,
           currentItem: null,
           order: item?.items || [],
+          orderDelete: [],
         }}
         validationSchema={Yup.object().shape({
           firstName: Yup.string().required("Обов'язкове поле!"),
@@ -123,6 +124,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             paymentId: values.payment.id,
             updateCustomer: values.updateCustomer,
             order: values.order.map((item: Order) => ({
+              id: item.id.toString().startsWith("new") ? undefined : item.id,
               buyPrice: values.currencies.find(
                 (el) => el.id === item.item.manufacturer.currencyId
               ).cost,
@@ -130,6 +132,7 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
               itemId: item.item.id,
               amount: item.amount,
             })),
+            orderDelete: values.orderDelete,
           };
           if (item) {
             dispatch(
@@ -468,6 +471,9 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                                     setFieldValue("order", [
                                       ...values.order,
                                       {
+                                        id: `new${Date.now()}${
+                                          values.order.length
+                                        }`,
                                         item: values.currentItem,
                                         amount: 1,
                                         sellPrice: Math.ceil(
@@ -690,7 +696,17 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                                     disabled={isDisabled}
                                     onClick={() => {
                                       const prev = [...values.order];
-                                      prev.splice(index, 1);
+                                      const deleted = prev.splice(index, 1);
+                                      if (
+                                        !deleted[0].id
+                                          .toString()
+                                          .startsWith("new")
+                                      ) {
+                                        setFieldValue("orderDelete", [
+                                          ...values.orderDelete,
+                                          deleted[0].id,
+                                        ]);
+                                      }
                                       setFieldValue("order", prev);
                                     }}
                                   >
