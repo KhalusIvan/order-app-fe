@@ -12,7 +12,6 @@ export const CustomerAutocomplete = ({
   inputValue,
   label,
   placeholder,
-  name,
   fieldTouchName,
   value,
   error,
@@ -26,7 +25,6 @@ export const CustomerAutocomplete = ({
   inputValue: string;
   label: string;
   placeholder: string;
-  name: string;
   fieldTouchName: string;
   value: Customer | null;
   error: boolean;
@@ -59,7 +57,6 @@ export const CustomerAutocomplete = ({
           options={options}
           loading={loading}
           onChange={(event, newValue) => {
-            setFieldValue(name, newValue);
             if (typeof newValue === "object") {
               setFieldValue("firstName", newValue!.firstName || "");
               setFieldValue("lastName", newValue!.lastName || "");

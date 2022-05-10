@@ -62,7 +62,6 @@ interface postRequest {
   city: string;
   postOffice: string;
   telephone: string;
-  customerId: number | undefined;
   statusId: number;
   paymentId: number;
   updateCustomer: boolean;

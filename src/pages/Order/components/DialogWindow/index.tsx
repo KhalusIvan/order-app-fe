@@ -86,7 +86,6 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
         initialValues={{
           status: item?.status || null,
           payment: item?.payment || null,
-          customer: item?.customer || null,
           telephone: item?.telephone || "",
           firstName: item?.firstName || "",
           lastName: item?.lastName || "",
@@ -119,7 +118,6 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
             city: values.city,
             postOffice: values.postOffice,
             telephone: values.telephone,
-            customerId: values.customer?.id,
             statusId: values.status.id,
             paymentId: values.payment.id,
             updateCustomer: values.updateCustomer,
@@ -268,9 +266,8 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                             inputValue={values.telephone}
                             label="Телефон"
                             placeholder="Введіть телефон"
-                            name="customer"
                             fieldTouchName="telephone"
-                            value={values.customer}
+                            value={null}
                             error={Boolean(
                               touched.telephone && errors.telephone
                             )}
