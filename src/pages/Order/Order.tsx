@@ -136,6 +136,17 @@ export const Order = () => {
               postOffice: el.postOffice,
               payment: el.payment.name,
               status: el.status.name,
+              total: `${
+                el.items.reduce(
+                  (
+                    prev: { total: number },
+                    current: { amount: number; sellPrice: number }
+                  ) => ({
+                    total: prev.total + current.sellPrice * current.amount,
+                  }),
+                  { total: 0 }
+                ).total
+              } UAH`,
               delete: (
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   {!el.status.finish && (
@@ -155,7 +166,7 @@ export const Order = () => {
                 </div>
               ),
             }))}
-            width={950}
+            width={1200}
             pages={data.pages || 1}
           />
         )}

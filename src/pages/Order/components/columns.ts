@@ -5,9 +5,10 @@ const columns: Array<{ id: number; title: string; object: string }> = [
   { id: 4, title: "Місто", object: "city" },
   { id: 5, title: "Відділення", object: "postOffice" },
   { id: 6, title: "Дата", object: "date" },
-  { id: 7, title: "Спосіб оплати", object: "payment" },
-  { id: 8, title: "Статус", object: "status" },
-  { id: 9, title: "Дії", object: "delete" },
+  { id: 7, title: "Сума", object: "total" },
+  { id: 8, title: "Спосіб оплати", object: "payment" },
+  { id: 9, title: "Статус", object: "status" },
+  { id: 10, title: "Дії", object: "delete" },
 ];
 
 export default columns;

@@ -13,6 +13,7 @@ import { ConfirmAccount } from "../pages/auth/ConfirmAccount";
 import { ConfirmPassword } from "../pages/auth/ConfirmPassword";
 
 import { Manufacturer } from "../pages/Manufacturer/Manufacturer";
+import { Dashboard } from "../pages/Dashboard/Dashboard";
 import { Employee } from "../pages/Employee/Employee";
 import { Item } from "../pages/Item/Item";
 import { Order } from "../pages/Order/Order";
@@ -21,7 +22,10 @@ import { Workspace } from "../pages/Workspace/Workspace";
 import { Home } from "../pages/Home";
 
 import { Route } from "../types/Route";
-
+const prices = [
+  1200, 1350, 800, 1200, 5000, 12000, 8500, 4560, 4560, 12000, 12300, 1200,
+  15000, 12800,
+];
 const routes: Array<Route> = [
   //First page
   {
@@ -78,6 +82,7 @@ const routes: Array<Route> = [
   //Dashboard
   {
     title: "Панель",
+    component: Dashboard,
     path: "/dashboard",
     icon: Monitor,
     sidebar: true,
