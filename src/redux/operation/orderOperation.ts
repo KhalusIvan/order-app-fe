@@ -21,6 +21,7 @@ export const getOrders =
     const axios = getAxiosInstance(dispatch);
     try {
       const response = await axios.get(`api/order?${params}`, setBearerToken());
+      await axios.get(`api/order/statistic`, setBearerToken());
       if (params.includes("filter=true")) {
         dispatch(
           getOrdersAction({

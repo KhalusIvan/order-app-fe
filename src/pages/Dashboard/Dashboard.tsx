@@ -175,7 +175,7 @@ export const Dashboard = () => {
                   <Typography variant="h6">Найпопулярніша продукція</Typography>
                   <Pie
                     data={{
-                      labels: ["Витрати", "Дохід"],
+                      labels: ["1886-0051", "1586-0051"],
                       datasets: [
                         {
                           data: [16700, 8300],
@@ -202,7 +202,7 @@ export const Dashboard = () => {
                   <Typography variant="h6">Працівники</Typography>
                   <Pie
                     data={{
-                      labels: ["Витрати", "Дохід"],
+                      labels: ["Василь Попов", "Юрій Іванов"],
                       datasets: [
                         {
                           data: [16700, 8300],
