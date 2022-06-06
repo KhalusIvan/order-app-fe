@@ -66,12 +66,7 @@ export const Workspace = () => {
           </Grid>
         ) : (
           <TableComponent
-            columns={columns.map((el) => {
-              if (el.id === 2) {
-                return { ...el, callback: handleOpenDialog };
-              }
-              return el;
-            })}
+            columns={columns}
             rows={data.rows.map((el) => ({
               ...el,
               currentWorkspace: (
@@ -85,15 +80,30 @@ export const Workspace = () => {
                 />
               ),
               roleName: el.role.name,
-              name: el.workspace.name,
-              delete: (
-                <IconButton
-                  size="small"
-                  onClick={() => dispatch(deleteWorkspace(el.id, params))}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              ),
+              name:
+                el.role.name === "Власник" ? (
+                  <span
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
+                    onClick={() => {
+                      handleOpenDialog(el.id);
+                    }}
+                  >
+                    {el.workspace.name}
+                  </span>
+                ) : (
+                  el.workspace.name
+                ),
+              delete:
+                el.role.name === "Власник" ? (
+                  <IconButton
+                    size="small"
+                    onClick={() => dispatch(deleteWorkspace(el.id, params))}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                ) : (
+                  "-"
+                ),
             }))}
             width={600}
             pages={data.pages || 1}

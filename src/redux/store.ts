@@ -8,6 +8,7 @@ import manufacturerReducer from "./duck/manufacturerDuck";
 import employeeReducer from "./duck/employeeDuck";
 import itemReducer from "./duck/itemDuck";
 import orderReducer from "./duck/orderDuck";
+import statisticReducer from "./duck/statisticDuck";
 import customerReducer from "./duck/customerDuck";
 import workspaceReducer from "./duck/workspaceDuck";
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   orderReducer,
   customerReducer,
   workspaceReducer,
+  statisticReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

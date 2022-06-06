@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { PageTitle } from "../../components/PageTitle";
-import { useDispatch } from "react-redux";
-import { getCustomers } from "../../redux/operation/customerOperation";
+import { useDispatch, useSelector } from "react-redux";
+import { getStatistics } from "../../redux/operation/statisticOperation";
+import { getStatisticsSelector } from "../../redux/selector/statisticSelector";
 import { Pie, Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -17,7 +18,6 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
-import { useLocation } from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.register(
@@ -43,50 +43,88 @@ for (let i = 0; i < 14; i++) {
 }
 
 const labels = array.reverse();
-const prices = [
-  1200, 1350, 800, 1200, 5000, 12000, 8500, 4560, 4560, 12000, 12300, 1200,
-  15000, 12800,
-];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      type: "line" as const,
-      label: "Графік",
-      borderColor: "rgb(255, 99, 132)",
-      borderWidth: 2,
-      fill: false,
-      data: prices,
-    },
-    {
-      type: "bar" as const,
-      label: "Бари",
-      backgroundColor: "rgb(75, 192, 192)",
-      data: prices,
-      borderColor: "white",
-      borderWidth: 2,
-    },
-  ],
-};
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
-  const params = new URLSearchParams(useLocation().search);
-  const [isFirst, setIsFirst] = useState<boolean>(true);
+  const statistic = useSelector(getStatisticsSelector);
+
+  const generalSell = statistic.general.reduce(
+    (prev, curr) => ({ sell: +prev.sell + +curr.sell }),
+    { sell: 0 }
+  ).sell;
+  const generalBuy = statistic.general.reduce(
+    (prev, curr) => ({ buy: +prev.buy + +curr.buy }),
+    { buy: 0 }
+  ).buy;
+
+  const validGeneral = statistic.general.map((el) => ({
+    ...el,
+    date: `${el.date.split("-")[2]}.${el.date.split("-")[1]}`,
+  }));
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        type: "line" as const,
+        label: "Графік",
+        borderColor: "rgb(255, 99, 132)",
+        borderWidth: 2,
+        fill: false,
+        data: labels.map(
+          (el) => validGeneral.find((gen) => gen.date === el)?.sell || 0
+        ),
+      },
+      {
+        type: "bar" as const,
+        label: "Бари",
+        backgroundColor: "rgb(75, 192, 192)",
+        data: labels.map(
+          (el) => validGeneral.find((gen) => gen.date === el)?.sell || 0
+        ),
+        borderColor: "white",
+        borderWidth: 2,
+      },
+    ],
+  };
+
+  const dataProfit = {
+    labels,
+    datasets: [
+      {
+        type: "line" as const,
+        label: "Графік",
+        borderColor: "rgb(255, 99, 132)",
+        borderWidth: 2,
+        fill: false,
+        data: labels.map((el) => {
+          const finded = validGeneral.find((gen) => gen.date === el);
+          if (finded) {
+            return +finded.sell - +finded.buy;
+          }
+          return 0;
+        }),
+      },
+      {
+        type: "bar" as const,
+        label: "Бари",
+        backgroundColor: "rgb(75, 192, 192)",
+        data: labels.map((el) => {
+          const finded = validGeneral.find((gen) => gen.date === el);
+          if (finded) {
+            return +finded.sell - +finded.buy;
+          }
+          return 0;
+        }),
+        borderColor: "white",
+        borderWidth: 2,
+      },
+    ],
+  };
 
   useEffect(() => {
-    //dispatch(getCustomerManufacturers());
+    dispatch(getStatistics());
   }, []);
-
-  useEffect(() => {
-    if (!params.has("page")) params.append("page", "1");
-    if (isFirst) {
-      params.append("filter", "true");
-      setIsFirst(false);
-    }
-    dispatch(getCustomers(params.toString().replaceAll("%2C", ",")));
-  }, [params.toString()]);
 
   return (
     <>
@@ -107,7 +145,7 @@ export const Dashboard = () => {
                       sx={{ py: 2, px: 4, minWidth: 1, borderRadius: 5 }}
                     >
                       <Typography variant="h6">Загальний оборот</Typography>
-                      <Typography variant="h3">25000 UAH</Typography>
+                      <Typography variant="h3">{generalSell} UAH</Typography>
                     </Paper>
                   </Grid>
                   <Grid item xs={12}>
@@ -116,7 +154,7 @@ export const Dashboard = () => {
                       sx={{ py: 2, px: 4, minWidth: 1, borderRadius: 5 }}
                     >
                       <Typography variant="h6">Витрачено коштів</Typography>
-                      <Typography variant="h3">16700 UAH</Typography>
+                      <Typography variant="h3">{generalBuy} UAH</Typography>
                     </Paper>
                   </Grid>
                   <Grid item xs={12}>
@@ -125,7 +163,9 @@ export const Dashboard = () => {
                       sx={{ py: 2, px: 4, minWidth: 1, borderRadius: 5 }}
                     >
                       <Typography variant="h6">Загальний дохід</Typography>
-                      <Typography variant="h3">8300 UAH</Typography>
+                      <Typography variant="h3">
+                        {generalSell - generalBuy} UAH
+                      </Typography>
                     </Paper>
                   </Grid>
                 </Grid>
@@ -147,7 +187,7 @@ export const Dashboard = () => {
                       labels: ["Витрати", "Дохід"],
                       datasets: [
                         {
-                          data: [16700, 8300],
+                          data: [generalBuy, generalSell - generalBuy],
                           backgroundColor: ["#fa908e", "#ffce73"],
                           borderColor: ["#fa4e4b", "#ffb01c"],
                           borderWidth: 1,
@@ -175,10 +215,10 @@ export const Dashboard = () => {
                   <Typography variant="h6">Найпопулярніша продукція</Typography>
                   <Pie
                     data={{
-                      labels: ["1886-0051", "1586-0051"],
+                      labels: statistic.items.map((el) => el.item.code),
                       datasets: [
                         {
-                          data: [16700, 8300],
+                          data: statistic.items.map((el) => +el.number),
                           backgroundColor: ["#fa908e", "#ffce73"],
                           borderColor: ["#fa4e4b", "#ffb01c"],
                           borderWidth: 1,
@@ -202,10 +242,12 @@ export const Dashboard = () => {
                   <Typography variant="h6">Працівники</Typography>
                   <Pie
                     data={{
-                      labels: ["Василь Попов", "Юрій Іванов"],
+                      labels: statistic.saler.map(
+                        (el) => `${el.user.firstName} ${el.user.lastName}`
+                      ),
                       datasets: [
                         {
-                          data: [16700, 8300],
+                          data: statistic.saler.map((el) => +el.sell),
                           backgroundColor: ["#fa908e", "#ffce73"],
                           borderColor: ["#fa4e4b", "#ffb01c"],
                           borderWidth: 1,
@@ -231,7 +273,7 @@ export const Dashboard = () => {
               sx={{ mt: 2, mx: 2, py: 2, px: 4, borderRadius: 5 }}
             >
               <Typography variant="h6">Заробіток</Typography>
-              <Chart type="bar" data={data} />
+              <Chart type="bar" data={dataProfit} />
             </Paper>
           </Grid>
         </Grid>

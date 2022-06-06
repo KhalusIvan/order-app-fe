@@ -18,11 +18,12 @@ import { Search } from "../../components/DefaultTable/Search";
 import { Multiselect } from "../../components/DefaultTable/Multiselect";
 import { Loader } from "../../components/Loader";
 import { DialogWindow } from "./components/DialogWindow";
-
 import columns from "./components/columns";
 import { useLocation } from "react-router-dom";
+import { getUserRoleSelector } from "../../redux/selector/userSelector";
 
 export const Employee = () => {
+  const role = useSelector(getUserRoleSelector);
   const dispatch = useDispatch();
   const data = useSelector(getEmployeesSelector);
   const isLoading = useSelector(getLoaderSelector("employee"));
@@ -58,13 +59,15 @@ export const Employee = () => {
       <Helmet title="Employees" />
       <Grid container justifyContent="space-between" alignItems="center">
         <PageTitle title={"Штат"} />
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => handleOpenDialog(null)}
-        >
-          Додати працівника
-        </Button>
+        {role < 2 && (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => handleOpenDialog(null)}
+          >
+            Додати працівника
+          </Button>
+        )}
       </Grid>
       <Divider sx={{ my: 1 }} />
       <Grid container sx={{ my: 3 }}>
@@ -83,12 +86,14 @@ export const Employee = () => {
           </Grid>
         ) : (
           <TableComponent
-            columns={columns.map((el) => {
-              if (el.id === 1) {
-                return { ...el, callback: handleOpenDialog };
-              }
-              return el;
-            })}
+            columns={columns
+              .filter((el) => !(role > 1 && el.id === 4))
+              .map((el) => {
+                if (el.id === 1 && role < 2) {
+                  return { ...el, callback: handleOpenDialog };
+                }
+                return el;
+              })}
             rows={data.rows.map((el) => ({
               ...el,
               user: `${el.user.firstName} ${el.user.lastName}`,

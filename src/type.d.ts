@@ -63,3 +63,12 @@ interface WorkspaceState {
   pages?: number;
   rows: WorkspaceRequest[];
 }
+
+interface StatisticState {
+  general: { date: string; sell: number; buy: number }[];
+  items: { number: number; item: { id: number; code: string } }[];
+  saler: {
+    sell: number;
+    user: { id: number; firstName: string; lastName: string };
+  }[];
+}

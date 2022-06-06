@@ -17,11 +17,12 @@ import { Search } from "../../components/DefaultTable/Search";
 import { Multiselect } from "../../components/DefaultTable/Multiselect";
 import { Loader } from "../../components/Loader";
 import { DialogWindow } from "./components/DialogWindow";
-
 import columns from "./components/columns";
 import { useLocation } from "react-router-dom";
+import { getUserRoleSelector } from "../../redux/selector/userSelector";
 
 export const Item = () => {
+  const role = useSelector(getUserRoleSelector);
   const dispatch = useDispatch();
   const data = useSelector(getItemsSelector);
   const isLoading = useSelector(getLoaderSelector("item"));
@@ -56,13 +57,15 @@ export const Item = () => {
       <Helmet title="Item" />
       <Grid container justifyContent="space-between" alignItems="center">
         <PageTitle title={"Продукція"} />
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={() => handleOpenDialog(null)}
-        >
-          Додати продукцію
-        </Button>
+        {role < 3 && (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => handleOpenDialog(null)}
+          >
+            Додати продукцію
+          </Button>
+        )}
       </Grid>
       <Divider sx={{ my: 1 }} />
       <Grid container sx={{ my: 3 }}>
@@ -81,12 +84,14 @@ export const Item = () => {
           </Grid>
         ) : (
           <TableComponent
-            columns={columns.map((el) => {
-              if (el.id === 1) {
-                return { ...el, callback: handleOpenDialog };
-              }
-              return el;
-            })}
+            columns={columns
+              .filter((el) => !(role > 2 && el.id === 6))
+              .map((el) => {
+                if (el.id === 1 && role < 3) {
+                  return { ...el, callback: handleOpenDialog };
+                }
+                return el;
+              })}
             rows={data.rows.map((el) => ({
               ...el,
               manufacturer: el.manufacturer.name,

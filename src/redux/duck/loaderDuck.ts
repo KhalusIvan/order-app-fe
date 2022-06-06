@@ -17,6 +17,7 @@ const initialState: Loader = {
   status: 0,
   order: 0,
   payment: 0,
+  statistic: 0,
 };
 
 export function loaderAddAction(field: string) {
