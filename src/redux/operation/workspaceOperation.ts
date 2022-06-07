@@ -66,12 +66,17 @@ export const updateWorkspace =
   async (dispatch, getState) => {
     const axios = getAxiosInstance(dispatch);
     try {
-      await axios.post(`api/workspace/${id}/update`, json, setBearerToken());
+      const response = await axios.post(
+        `api/workspace/${id}/update`,
+        json,
+        setBearerToken()
+      );
       if (!params.has("page")) {
         params.append("page", "1");
       }
       handleCloseDialog();
       dispatch(getWorkspaces(params.toString()));
+      response.data.user && dispatch(signInAction(response.data.user));
     } catch (err) {
       setSubmitting(false);
     }
@@ -102,12 +107,16 @@ export const deleteWorkspace =
     const axios = getAxiosInstance(dispatch);
     try {
       dispatch(loaderAddAction("workspace"));
-      await axios.delete(`api/workspace/${id}`, setBearerToken());
+      const response = await axios.delete(
+        `api/workspace/${id}`,
+        setBearerToken()
+      );
       if (!params.has("page")) {
         params.append("page", "1");
       }
       params.append("filter", "true");
       dispatch(getWorkspaces(params.toString()));
+      dispatch(signInAction(response.data.user));
     } catch (err) {
     } finally {
       dispatch(loaderRemoveAction("workspace"));
