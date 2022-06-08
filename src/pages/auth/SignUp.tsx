@@ -69,8 +69,8 @@ export const SignUp = () => {
                   <Grid container spacing={3}>
                     <Grid item xs={6}>
                       <CustomTextField
-                        label="Фамілія"
-                        placeholder="Введіть фамілію"
+                        label="Прізвище"
+                        placeholder="Введіть прізвище"
                         value={values.lastName}
                         name="lastName"
                         onBlur={handleBlur}

@@ -188,8 +188,8 @@ export const Dashboard = () => {
                       datasets: [
                         {
                           data: [generalBuy, generalSell - generalBuy],
-                          backgroundColor: ["#fa908e", "#ffce73"],
-                          borderColor: ["#fa4e4b", "#ffb01c"],
+                          backgroundColor: ["#ff6361", "#ffa600"],
+                          borderColor: ["#e31f1b", "#ab7003"],
                           borderWidth: 1,
                         },
                       ],
@@ -212,15 +212,29 @@ export const Dashboard = () => {
                     borderRadius: 5,
                   }}
                 >
-                  <Typography variant="h6">Найпопулярніша продукція</Typography>
+                  <Typography variant="h6">
+                    Кількість проданої продукції
+                  </Typography>
                   <Pie
                     data={{
                       labels: statistic.items.map((el) => el.item.code),
                       datasets: [
                         {
                           data: statistic.items.map((el) => +el.number),
-                          backgroundColor: ["#fa908e", "#ffce73"],
-                          borderColor: ["#fa4e4b", "#ffb01c"],
+                          backgroundColor: [
+                            "#003f5c",
+                            "#58508d",
+                            "#bc5090",
+                            "#ff6361",
+                            "#ffa600",
+                          ],
+                          borderColor: [
+                            "#001721",
+                            "#30286b",
+                            "#91336b",
+                            "#e31f1b",
+                            "#ab7003",
+                          ],
                           borderWidth: 1,
                         },
                       ],
@@ -248,8 +262,20 @@ export const Dashboard = () => {
                       datasets: [
                         {
                           data: statistic.saler.map((el) => +el.sell),
-                          backgroundColor: ["#fa908e", "#ffce73"],
-                          borderColor: ["#fa4e4b", "#ffb01c"],
+                          backgroundColor: [
+                            "#003f5c",
+                            "#58508d",
+                            "#bc5090",
+                            "#ff6361",
+                            "#ffa600",
+                          ],
+                          borderColor: [
+                            "#001721",
+                            "#30286b",
+                            "#91336b",
+                            "#e31f1b",
+                            "#ab7003",
+                          ],
                           borderWidth: 1,
                         },
                       ],

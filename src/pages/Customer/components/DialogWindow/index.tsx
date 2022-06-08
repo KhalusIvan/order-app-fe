@@ -116,8 +116,8 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                 </Grid>
                 <Grid item xs={4}>
                   <CustomTextField
-                    label="Фамілія"
-                    placeholder="Введіть фамілію"
+                    label="Прізвище"
+                    placeholder="Введіть прізвище"
                     value={values.lastName}
                     name="lastName"
                     onBlur={handleBlur}

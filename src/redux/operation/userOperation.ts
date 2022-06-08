@@ -84,6 +84,46 @@ export const resetPassword =
     }
   };
 
+export const changePassword =
+  (
+    json: { prevPassword: string; newPassword: string },
+    setSubmitting: (arg0: boolean) => void,
+    closePopUp: () => void
+  ): ThunkAction<void, RootState, null, Action<string>> =>
+  async (dispatch, getState) => {
+    const axios = getAxiosInstance(dispatch);
+    try {
+      await axios.post("api/user/change-password", json, setBearerToken());
+      closePopUp();
+    } catch (err) {
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+export const changeUserInfo =
+  (
+    json: { firstName: string; lastName: string; email: string },
+    setSubmitting: (arg0: boolean) => void,
+    closePopUp: () => void
+  ): ThunkAction<void, RootState, null, Action<string>> =>
+  async (dispatch, getState) => {
+    const axios = getAxiosInstance(dispatch);
+    console.log(json);
+    try {
+      const response = await axios.post(
+        "api/user/change-information",
+        json,
+        setBearerToken()
+      );
+      closePopUp();
+      dispatch(signInAction(response.data.user));
+    } catch (err) {
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
 export const confirmAccount =
   (
     token: string,

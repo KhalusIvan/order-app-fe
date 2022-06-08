@@ -300,8 +300,8 @@ export const DialogWindow = ({ dialog, handleCloseDialog }: DialogProps) => {
                         </Grid>
                         <Grid item xs={6}>
                           <CustomTextField
-                            label="Фамілія"
-                            placeholder="Введіть фамілію"
+                            label="Прізвище"
+                            placeholder="Введіть прізвище"
                             value={values.lastName}
                             disabled={isDisabled}
                             name="lastName"

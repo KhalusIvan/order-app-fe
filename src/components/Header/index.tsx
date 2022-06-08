@@ -2,25 +2,25 @@ import React, { useState } from "react";
 import { AppBar, Box, Toolbar } from "@mui/material";
 
 import { AppTitle } from "./AppTitle";
-import { More, UserAccount } from "../Actions";
-import { DefaultMenu, MobileMenu } from "./Menu";
+import { UserAccount } from "../Actions";
+import { DefaultMenu } from "./Menu";
+import { ChangePassword } from "../ChangePassword";
+import { ChangeInfo } from "../ChangeInfo";
 
 export const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    useState<null | HTMLElement>(null);
-
+  const [dialogPassword, setDialogPassword] = useState<{ open: boolean }>({
+    open: false,
+  });
+  const [dialogInfo, setDialogInfo] = useState<{ open: boolean }>({
+    open: false,
+  });
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>
-    setMobileMoreAnchorEl(event.currentTarget);
-
-  const handleMobileMenuClose = () => setMobileMoreAnchorEl(null);
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
   return (
@@ -37,21 +37,32 @@ export const Header = () => {
           >
             <UserAccount onClick={handleProfileMenuOpen} />
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <More onClick={handleMobileMenuOpen} />
-          </Box>
         </Toolbar>
       </AppBar>
-      <MobileMenu
-        isMenuOpen={Boolean(mobileMoreAnchorEl)}
-        handleMenuOpen={handleMobileMenuOpen}
-        handleMenuClose={handleMobileMenuClose}
-        anchorEl={mobileMoreAnchorEl}
+      <ChangePassword
+        dialog={dialogPassword}
+        handleCloseDialog={() => {
+          setDialogPassword({ open: false });
+        }}
+      />
+      <ChangeInfo
+        dialog={dialogInfo}
+        handleCloseDialog={() => {
+          setDialogInfo({ open: false });
+        }}
       />
       <DefaultMenu
         isMenuOpen={Boolean(anchorEl)}
         handleMenuClose={handleMenuClose}
         anchorEl={anchorEl}
+        openPassword={() => {
+          handleMenuClose();
+          setDialogPassword({ open: true });
+        }}
+        openInfo={() => {
+          handleMenuClose();
+          setDialogInfo({ open: true });
+        }}
       />
     </>
   );

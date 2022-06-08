@@ -1,10 +1,12 @@
-import { Divider, Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 
-import { Settings, Preferences, SignOut } from "../../Actions";
+import { Information, Password } from "../../Actions";
 
 interface DefaultMenuProps {
   isMenuOpen: boolean;
   handleMenuClose: () => void;
+  openPassword: () => void;
+  openInfo: () => void;
   anchorEl: HTMLElement | null;
 }
 
@@ -12,6 +14,8 @@ export const DefaultMenu = ({
   isMenuOpen,
   handleMenuClose,
   anchorEl,
+  openPassword,
+  openInfo,
 }: DefaultMenuProps) => (
   <Menu
     anchorEl={anchorEl}
@@ -20,18 +24,13 @@ export const DefaultMenu = ({
     open={isMenuOpen}
     onClose={handleMenuClose}
   >
-    <MenuItem onClick={handleMenuClose}>
-      <Settings disableTooltip />
-      Settings
+    <MenuItem onClick={openInfo}>
+      <Information disableTooltip />
+      Інформація
     </MenuItem>
-    <MenuItem onClick={handleMenuClose}>
-      <Preferences disableTooltip />
-      Preferences
-    </MenuItem>
-    <Divider />
-    <MenuItem onClick={handleMenuClose}>
-      <SignOut disableTooltip />
-      Sign Out
+    <MenuItem onClick={openPassword}>
+      <Password disableTooltip />
+      Пароль
     </MenuItem>
   </Menu>
 );

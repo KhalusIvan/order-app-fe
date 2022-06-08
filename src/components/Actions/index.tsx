@@ -1,11 +1,7 @@
 import React from "react";
-import {
-  MoreVert as MoreIcon,
-  AccountCircle,
-  Logout as LogoutIcon,
-  Settings as SettingsIcon,
-  List as PreferencesIcon,
-} from "@mui/icons-material";
+import { AccountCircle } from "@mui/icons-material";
+import KeyIcon from "@mui/icons-material/Key";
+import InfoIcon from "@mui/icons-material/Info";
 
 import { ActionItem } from "./ActionItem";
 
@@ -15,52 +11,34 @@ interface ActionProps {
   disableTooltip?: boolean;
 }
 
-export const More = ({ onClick, disableTooltip = false }: ActionProps) => (
-  <ActionItem
-    title="More"
-    icon={MoreIcon}
-    onClick={onClick}
-    disableTooltip={disableTooltip}
-  />
-);
-
 export const UserAccount = ({
   onClick,
   disableTooltip = false,
 }: ActionProps) => (
   <ActionItem
-    title="My Account"
+    title="Мій профіль"
     icon={AccountCircle}
     onClick={onClick}
     disableTooltip={disableTooltip}
   />
 );
 
-export const SignOut = ({ onClick, disableTooltip = false }: ActionProps) => (
-  <ActionItem
-    title="Sign Out"
-    icon={LogoutIcon}
-    onClick={onClick}
-    disableTooltip={disableTooltip}
-  />
-);
-
-export const Settings = ({ onClick, disableTooltip = false }: ActionProps) => (
-  <ActionItem
-    title="Settings"
-    icon={SettingsIcon}
-    onClick={onClick}
-    disableTooltip={disableTooltip}
-  />
-);
-
-export const Preferences = ({
+export const Information = ({
   onClick,
   disableTooltip = false,
 }: ActionProps) => (
   <ActionItem
-    title="Preferences"
-    icon={PreferencesIcon}
+    title="Інформація"
+    icon={InfoIcon}
+    onClick={onClick}
+    disableTooltip={disableTooltip}
+  />
+);
+
+export const Password = ({ onClick, disableTooltip = false }: ActionProps) => (
+  <ActionItem
+    title="Пароль"
+    icon={KeyIcon}
     onClick={onClick}
     disableTooltip={disableTooltip}
   />
