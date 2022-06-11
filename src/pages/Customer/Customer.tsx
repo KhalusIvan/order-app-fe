@@ -17,10 +17,8 @@ import { Loader } from "../../components/Loader";
 import { DialogWindow } from "./components/DialogWindow";
 import columns from "./components/columns";
 import { useLocation } from "react-router-dom";
-import { getUserRoleSelector } from "../../redux/selector/userSelector";
 
 export const Customer = () => {
-  const role = useSelector(getUserRoleSelector);
   const dispatch = useDispatch();
   const data = useSelector(getCustomersSelector);
   const isLoading = useSelector(getLoaderSelector("customer"));
@@ -55,15 +53,13 @@ export const Customer = () => {
       <Helmet title="Customer" />
       <Grid container justifyContent="space-between" alignItems="center">
         <PageTitle title={"Покупці"} />
-        {role < 3 && (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => handleOpenDialog(null)}
-          >
-            Додати покупця
-          </Button>
-        )}
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => handleOpenDialog(null)}
+        >
+          Додати покупця
+        </Button>
       </Grid>
       <Divider sx={{ my: 1 }} />
       <Grid container sx={{ my: 3 }}>
@@ -82,14 +78,12 @@ export const Customer = () => {
           </Grid>
         ) : (
           <TableComponent
-            columns={columns
-              .filter((el) => !(role > 2 && el.id === 5))
-              .map((el) => {
-                if (el.id === 1 && role < 3) {
-                  return { ...el, callback: handleOpenDialog };
-                }
-                return el;
-              })}
+            columns={columns.map((el) => {
+              if (el.id === 1) {
+                return { ...el, callback: handleOpenDialog };
+              }
+              return el;
+            })}
             rows={data.rows.map((el) => ({
               ...el,
               name: `${el.lastName} ${el.firstName}${
