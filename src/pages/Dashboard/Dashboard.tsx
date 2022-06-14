@@ -18,9 +18,11 @@ import {
   PointElement,
   LineElement,
   LineController,
+  BarController,
 } from "chart.js";
 
 ChartJS.register(
+  BarController,
   ArcElement,
   LineController,
   LinearScale,
