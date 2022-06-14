@@ -17,10 +17,12 @@ import {
   BarElement,
   PointElement,
   LineElement,
+  LineController,
 } from "chart.js";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.register(
+  ArcElement,
+  LineController,
   LinearScale,
   CategoryScale,
   BarElement,
